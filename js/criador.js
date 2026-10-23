@@ -31,14 +31,21 @@ function atributos(){
   if(c&&c.bonusCarga) a.CARGA=(a.CARGA||0)+c.bonusCarga;
   return a;
 }
+/* Os três orçamentos crescem com o Nível (livro p.15): +2 de atributo,
+   +1 de Perícia e +1 de Concepção por nível acima do 1°. Atributo e
+   Perícia estavam travados no valor do Nível 1 — uma ficha de Nível 5
+   mostrava "34 pontos" como se fosse recém-criada. */
+const attrTotal = () => R.pontosDeAtributo(ficha.nivel);
 const attrGasto = () => R.somaAtributos(ficha.atributosBase);
-const attrSobra = () => R.PONTOS_ATRIBUTO_CRIACAO - attrGasto();
-function bonusOrigemFalta(){
+const attrSobra = () => attrTotal() - attrGasto();
+function bonusOrigemTotal(){
   const o=origem(); if(!o) return 0;
-  const total=(o.escolheAtributo||0)+(o.escolheEntre?(o.escolheQuanto||0):0);
-  return total - Object.values(ficha.escolhaOrigem).reduce((s,v)=>s+v,0);
+  return (o.escolheAtributo||0)+(o.escolheEntre?(o.escolheQuanto||0):0);
 }
-const perTotal  = () => R.PONTOS_PERICIA_DA_ORIGEM + (classe()?classe().pontosPericia:0);
+function bonusOrigemFalta(){
+  return bonusOrigemTotal() - Object.values(ficha.escolhaOrigem).reduce((s,v)=>s+v,0);
+}
+const perTotal  = () => R.pontosDePericia(ficha.nivel, classe()?classe().pontosPericia:0);
 const perGasto  = () => Object.values(ficha.pericias).reduce((s,g)=>s+R.GRAUS[g].custo,0);
 const perSobra  = () => perTotal()-perGasto();
 const conTotal  = () => R.pontosDeConcepcao(ficha.nivel)+R.pontosDeLastro(ficha.lastro);
@@ -119,8 +126,12 @@ const T = {
 
 1(){ const teto=R.tetoAtributo(ficha.vezesEstourado), fin=atributos();
   return `<section class="cartao">
-  <h2>Os ${R.PONTOS_ATRIBUTO_CRIACAO} pontos</h2>
-  <p class="explica">Mínimo ${R.ATRIBUTO_MIN}, teto ${teto} na criação. Bônus de Origem e Classe entram <b>depois</b> e aparecem na pílula escura.</p>
+  <h2>Os ${attrTotal()} pontos</h2>
+  <p class="explica">Mínimo ${R.ATRIBUTO_MIN}, teto ${teto}. São ${R.PONTOS_ATRIBUTO_CRIACAO} no Nível 1 e <b>+2 por Nível</b> depois disso —
+    no Nível ${ficha.nivel} dá ${attrTotal()}. Bônus de Origem e Classe entram <b>por cima</b> destes pontos
+    e aparecem na pílula escura; é o próprio livro que manda distribuir os pontos primeiro
+    e só depois aplicar os bônus, pra você não gastar comprando o que ia ganhar de graça.</p>
+  ${bonusOrigemFalta()>0 ? `<p class="dizer">A sua Origem ainda tem <b>${bonusOrigemFalta()}</b> ponto(s) de bônus pra colocar, na etapa Origem.</p>` : ""}
   <div class="grade-attr">${R.ATRIBUTOS.map(a=>{
     const base=ficha.atributosBase[a.id], extra=(fin[a.id]||0)-base;
     return `<div class="bloco-attr" style="--cor:${a.cor}">
@@ -172,7 +183,10 @@ const T = {
         const custo=R.custoDoGrau(g,i), caro=i>g&&custo>perSobra();
         return `<button class="pip" type="button" data-per="${p.id}" data-grau="${i}" aria-pressed="${g===i}"
           ${(i>teto||caro)?"disabled":""} title="${esc(gr.nome)} · +${gr.bonus} · acumulado ${gr.custo}">${gr.custo}</button>`;}).join("")}</div>
-      <div class="bon">+${R.bonusDePericia(a,p,g)}</div></div>`;}).join("")}</div>
+      <div class="bon"><b>+${R.bonusDePericia(a,p,g)}</b><i>no teste</i></div></div>`;}).join("")}</div>
+  <p class="explica" style="margin-top:12px">Os números dentro das bolinhas são o <b>custo acumulado</b> de cada grau
+    (Destreinado 0 · Treinado 1 · Adepto 3 · Especialista 6 · Mestre 10). O número verde à direita é o que você
+    <b>soma no d20</b> quando rolar essa perícia: o atributo dela mais o bônus do grau.</p>
 </section>`; },
 
 5(){ const a=atributos(), lim=R.limitePorAcao(a), tem=new Set(ficha.aplicacoes.map(x=>x.id));
@@ -262,7 +276,12 @@ const T = {
         if((ap.formas||1)>1)partes.push(`${ap.formas} formas`);
         return `<li><span>${esc(x.nome)}${ap.nota?` — ${esc(ap.nota)}`:""}</span><b>${esc(partes.join(" · "))}</b></li>`;}).join("")}</ul>`:`<p class="nada">Nenhuma.</p>`}</div>
     ${ficha.lastro.length?`<div class="caixa" style="grid-column:1/-1"><h4>Lastro</h4><ul>${
-      ficha.lastro.map(id=>{const l=R.LASTRO.find(x=>x.id===id);return li(l.nome,`${l.pontos} Ponto(s)`);}).join("")}</ul></div>`:""}
+      /* .filter(Boolean): um JSON escrito à mão (ou de uma versão antiga)
+         pode trazer um Lastro que não existe mais na lista. Sem isto, um
+         id desconhecido derrubava a Revisão INTEIRA com um TypeError —
+         a tela mais importante do criador morria por causa de um item. */
+      ficha.lastro.map(id=>R.LASTRO.find(x=>x.id===id)).filter(Boolean)
+        .map(l=>li(l.nome,`${l.pontos} Ponto(s)`)).join("")}</ul></div>`:""}
   </div>
   <label class="campo" style="margin-top:16px"><span>Anotações, história, dívidas, promessas</span>
     <textarea id="f-anot" placeholder="O que ficou ecoando.">${esc(ficha.anotacoes)}</textarea></label>
@@ -323,7 +342,8 @@ function pintarPainel(){
   const d=(r,v,f)=>`<div class="der"><span class="r">${esc(r)}</span><b>${esc(v)}</b><span class="f">${esc(f||"")}</span></div>`;
   $("#painel").innerHTML = `
     <section class="cartao"><h3>Orçamentos</h3>
-      ${medidor("Pontos de atributo",attrGasto(),R.PONTOS_ATRIBUTO_CRIACAO)}
+      ${medidor("Pontos de atributo",attrGasto(),attrTotal())}
+      ${origem()&&bonusOrigemTotal()>0?medidor("Bônus da Origem",bonusOrigemTotal()-bonusOrigemFalta(),bonusOrigemTotal()):""}
       ${medidor("Pontos de Perícia",perGasto(),perTotal())}
       ${medidor("Pontos de Concepção",conGasto(),conTotal())}</section>
     <section class="cartao"><h3>A ficha, agora</h3><div class="derivados">
@@ -478,7 +498,7 @@ $("#b-seguir").addEventListener("click",()=>{
 
 /* ── início ── */
 (function(){
-  const T = window.RSS.Tema;
+  const T = window.TabulaTema;
   const slot = $("#troca-tema"); if(slot && T) slot.innerHTML = T.botao();
   if(T) T.aplicar(T.escolhido() || (window.RSS.CONFIG&&window.RSS.CONFIG.temaPadrao) || "cartoon", false);
   if(!Arm.temMemoria()) $("#sem-memoria").hidden=false;

@@ -285,3 +285,19 @@ input[type=range]:focus-visible{outline:3px solid var(--branco);outline-offset:3
   *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .po,.luzmouse,.tv{display:none}
 }
+
+/* ═══ linha de mesa da ficha: descanso + bônus do Mestre ═══
+   O Descanso longo vivia no rodapé da aba Itens — no celular, duas
+   rolagens abaixo de onde a pessoa procura por ele. */
+.linha-mesa{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+.linha-mesa .ajuste{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;
+  background:var(--painel2);border:1px solid var(--traco)}
+:root[data-tema="cartoon"] .linha-mesa .ajuste{border-width:2px}
+.linha-mesa .ajuste i{font-style:normal;font:700 10.5px/1 "Inter","Nunito",sans-serif;color:var(--fraco);
+  letter-spacing:.04em;text-transform:uppercase}
+.linha-mesa .ajuste b{min-width:28px;text-align:center;font:700 13px/1 "Inter",sans-serif;color:var(--branco);
+  font-variant-numeric:tabular-nums}
+.linha-mesa .ajuste button{width:24px;height:24px;border-radius:50%;cursor:pointer;line-height:1;
+  border:1px solid var(--traco);background:var(--painel);color:var(--suave);font:700 14px/1 "Inter",sans-serif}
+.linha-mesa .ajuste button:hover{background:var(--painel3);color:var(--branco)}
+@media(max-width:480px){.linha-mesa{gap:7px}.linha-mesa .ajuste i{display:none}}

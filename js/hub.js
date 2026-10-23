@@ -23,7 +23,8 @@ function atributosDe(f){
 function faltaNa(f){
   const q=[];
   if(!f.nome || !f.nome.trim()) q.push("nome");
-  if(R.somaAtributos(f.atributosBase||{}) !== R.PONTOS_ATRIBUTO_CRIACAO) q.push("atributos");
+  /* o orçamento de atributo depende do Nível: 34 no 1°, +2 por nível */
+  if(R.somaAtributos(f.atributosBase||{}) !== R.pontosDeAtributo(f.nivel||1)) q.push("atributos");
   if(!f.origemId) q.push("Origem");
   if(!f.classeId) q.push("Classe");
   if(!f.conceito || !f.conceito.trim()) q.push("Conceito");
@@ -106,7 +107,8 @@ function card(f){
         </div>`}
     <div class="acoes">
       ${falta.length
-        ? `<button class="bt" type="button" data-editar="${esc(f.id)}">Continuar</button>`
+        ? `<button class="bt" type="button" data-editar="${esc(f.id)}">Continuar</button>
+           <button class="bt calado" type="button" data-abrir="${esc(f.id)}">Abrir assim mesmo</button>`
         : `<button class="bt feito" type="button" data-abrir="${esc(f.id)}">Jogar</button>
            <button class="bt calado" type="button" data-editar="${esc(f.id)}">Editar</button>`}
       <button class="bt calado" type="button" data-exportar="${esc(f.id)}">JSON</button>
@@ -295,7 +297,7 @@ document.addEventListener("change", async ev=>{
 });
 
 (function(){
-  const T = window.RSS.Tema;
+  const T = window.TabulaTema;
   const slot = $("#troca-tema"); if(slot && T) slot.innerHTML = T.botao();
   if(T) T.perguntar();                       // só aparece na primeira visita
   if(T) T.aplicar(T.escolhido() || (window.RSS.CONFIG&&window.RSS.CONFIG.temaPadrao) || "cartoon", false);

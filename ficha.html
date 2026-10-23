@@ -116,6 +116,27 @@
             <div class="cano"><div class="liq" id="b-res" style="--c:var(--carga);width:100%"></div><div class="onda" id="o-res"></div></div>
             <div class="num"><span id="n-res">22</span> <i id="m-res">/ 22</i></div>
           </div>
+
+          <!-- O Descanso longo estava escondido no rodapé da aba Itens, que
+               no celular fica duas rolagens abaixo. Aqui ele mora junto das
+               barras que ele enche, que é onde a pessoa procura.
+               Os ± ao lado são o bônus do Mestre: nenhuma fórmula do livro
+               produz "+5 de Vida nessa missão", mas a mesa produz. -->
+          <div class="linha-mesa">
+            <button class="botao" id="descansar">Descanso longo</button>
+            <span class="ajuste" role="group" aria-label="Bônus do Mestre na Vida máxima">
+              <i>Vida máx.</i>
+              <button type="button" data-bonus-max="vida" data-d="-1" aria-label="Menos Vida máxima">−</button>
+              <b id="bn-vida">+0</b>
+              <button type="button" data-bonus-max="vida" data-d="1" aria-label="Mais Vida máxima">+</button>
+            </span>
+            <span class="ajuste" role="group" aria-label="Bônus do Mestre na Reserva máxima">
+              <i>Reserva máx.</i>
+              <button type="button" data-bonus-max="reserva" data-d="-1" aria-label="Menos Reserva máxima">−</button>
+              <b id="bn-res">+0</b>
+              <button type="button" data-bonus-max="reserva" data-d="1" aria-label="Mais Reserva máxima">+</button>
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -181,7 +202,6 @@
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap">
             <span style="font-size:12.5px;color:var(--fraco);font-weight:700">peso 1 de 14</span>
-            <button class="botao" id="descansar">Descanso longo</button>
           </div>
         </div>
       </div>

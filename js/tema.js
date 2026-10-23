@@ -95,7 +95,14 @@ document.addEventListener("click", ev => {
   aplicar(b.dataset.porTema, true);
 });
 
-window.RSS.Tema = { TEMAS, aplicar, escolhido, perguntar, botao, cedo };
+/* ⚠ COLISÃO DE NOME, e ela já mordeu uma vez.
+   A câmara (nucleo.js) também define R.Tema — mas o Tema dela é a PELE,
+   as sete cores. Carregando os dois na mesma página, o último a rodar
+   ganha, e na ficha.html quem roda depois é a câmara. Resultado: o botão
+   de trocar Cartoon ↔ Dark Fantasy chamava Tema.botao() e explodia.
+   Por isso este módulo mora também em window.TabulaTema, que é só dele. */
+window.RSS.Tema = window.RSS.Tema || { TEMAS, aplicar, escolhido, perguntar, botao, cedo };
+window.TabulaTema = { TEMAS, aplicar, escolhido, perguntar, botao, cedo };
 cedo();
 })();
 

@@ -73,6 +73,21 @@ const fadigaParaDebilitar = a => a.CARGA;
 
 /* ───────────────────────── orçamentos ──────────────────────────────── */
 const pontosDeConcepcao = nivel => 2 + nivel;
+
+/* ── progressão de nível (livro, p.15) ──────────────────────────────
+   "Nível 1: 34 pontos de atributo · 2 Pontos de Perícia da Origem + os da
+    Classe · 3 Pontos de Concepção.
+    Nível 2 a 20: +2 pontos de atributo · +1 Ponto de Perícia ·
+    +1 Ponto de Concepção, a cada nível."
+
+   Os três orçamentos sobem com o Nível. A Concepção já subia (2 + nível);
+   atributo e perícia estavam travados no valor do Nível 1 — uma ficha de
+   Nível 5 mostrava 34 pontos como se fosse de Nível 1. */
+const pontosDeAtributo = (nivel = 1) =>
+  PONTOS_ATRIBUTO_CRIACAO + 2 * (Math.max(1, nivel) - 1);
+
+const pontosDePericia = (nivel = 1, pontosDaClasse = 0) =>
+  PONTOS_PERICIA_DA_ORIGEM + pontosDaClasse + (Math.max(1, nivel) - 1);
 const pontosDeTrilha    = nivel => 1 + Math.floor(nivel / 4);
 const tetoDeLastro      = rankDeTrilha => 2 + Math.max(0, rankDeTrilha - 1);
 
@@ -341,7 +356,7 @@ const DC = [
 ];
 const DC_SALVAGUARDA = { leve:12, moderada:15, severa:18 };
 
-window.RSS.R = { EDICAO, ATRIBUTOS, PONTOS_ATRIBUTO_CRIACAO, ATRIBUTO_MIN, ATRIBUTO_TETO_BASE, tetoAtributo, somaAtributos, vidaMaxima, reservaMaxima, limitePorAcao, estouroMaximo, defesaPassiva, defesaAtiva, pesoMaximo, reducaoDeDano, iniciativa, fadigaParaDebilitar, pontosDeConcepcao, pontosDeTrilha, tetoDeLastro, cargaParaRepartir, TETO_DANO_BASE_ECO, GRAUS, custoDoGrau, grauMaximoPorNivel, PERICIAS, bonusDePericia, CLASSES, PONTOS_PERICIA_DA_ORIGEM, ORIGENS, rankDeTrilhaPorNivel, TRILHAS, custoDeTrilhaForaDaClasse, checarCargaDeTrilha, CUSTO_CONCEPCAO_APLICACAO, CUSTO_CONCEPCAO_REFORCO, APLICACOES_MIN, APLICACOES_MAX, APLICACOES, aplicacaoPorId, APLICACOES_COM_REPERTORIO, custoDeRepertorio, formasPorPontos, aplicacaoLiga, LASTRO, pontosDeLastro, DC, DC_SALVAGUARDA };
+window.RSS.R = { EDICAO, ATRIBUTOS, PONTOS_ATRIBUTO_CRIACAO, ATRIBUTO_MIN, ATRIBUTO_TETO_BASE, tetoAtributo, somaAtributos, vidaMaxima, reservaMaxima, limitePorAcao, estouroMaximo, defesaPassiva, defesaAtiva, pesoMaximo, reducaoDeDano, iniciativa, fadigaParaDebilitar, pontosDeConcepcao, pontosDeAtributo, pontosDePericia, pontosDeTrilha, tetoDeLastro, cargaParaRepartir, TETO_DANO_BASE_ECO, GRAUS, custoDoGrau, grauMaximoPorNivel, PERICIAS, bonusDePericia, CLASSES, PONTOS_PERICIA_DA_ORIGEM, ORIGENS, rankDeTrilhaPorNivel, TRILHAS, custoDeTrilhaForaDaClasse, checarCargaDeTrilha, CUSTO_CONCEPCAO_APLICACAO, CUSTO_CONCEPCAO_REFORCO, APLICACOES_MIN, APLICACOES_MAX, APLICACOES, aplicacaoPorId, APLICACOES_COM_REPERTORIO, custoDeRepertorio, formasPorPontos, aplicacaoLiga, LASTRO, pontosDeLastro, DC, DC_SALVAGUARDA };
 
 /* ponte pro ficha.js da câmara, que já destrutura window.RSS.REGRAS */
 /* Lê a Classe da ficha aberta: sem isso o criador dizia Reserva 38 e a
@@ -349,9 +364,16 @@ window.RSS.R = { EDICAO, ATRIBUTOS, PONTOS_ATRIBUTO_CRIACAO, ATRIBUTO_MIN, ATRIB
    +2/Nível do Bastião ficavam de fora. Duas telas, um número só. */
 const _classe = () => (window.RSS.ficha && window.RSS.ficha.classeId) || null;
 const _nivel  = () => (window.RSS.ficha && window.RSS.ficha.nivel) || 1;
+/* Bônus do Mestre. Nenhuma fórmula do livro produz isso: é o Mestre
+   dizendo "você ganhou +5 de Vida nessa missão". Fica guardado na ficha,
+   entra depois da fórmula e nunca derruba o máximo abaixo de 1. */
+const _bonus = k => {
+  const f = window.RSS.ficha && window.RSS.ficha.salva;
+  return (f && Number(f[k])) || 0;
+};
 window.RSS.REGRAS = {
-  vidaMaxima: a => vidaMaxima(a, _classe(), _nivel()),
-  reserva:    a => reservaMaxima(a, _classe()),
+  vidaMaxima: a => Math.max(1, vidaMaxima(a, _classe(), _nivel()) + _bonus("bonusVida")),
+  reserva:    a => Math.max(1, reservaMaxima(a, _classe()) + _bonus("bonusReserva")),
   limite:     limitePorAcao,
   defesaPassiva, pesoMaximo,
   alcance: c => 5 + 5 * c,

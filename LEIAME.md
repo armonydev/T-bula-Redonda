@@ -213,3 +213,41 @@ comentado em `css/paginas.css`, nos três lugares.
   a mesma régua dos campos de `.campo`.
 - A **Revisão passou a listar o que falta**. Antes ela só checava
   contradição, então uma ficha vazia chegava lá dizendo "ficha fechada".
+
+---
+
+## Correções de regra 23/10 (noite)
+
+**Os orçamentos estavam travados no Nível 1.** O livro, p.15: *"Nível 1:
+34 pontos de atributo · 2 Pontos de Perícia da Origem + os da Classe · 3
+Pontos de Concepção. Nível 2 a 20: +2 pontos de atributo · +1 Ponto de
+Perícia · +1 Ponto de Concepção, a cada nível."* A Concepção já subia; os
+outros dois não — uma ficha de Nível 5 mostrava 34 pontos como se fosse
+recém-criada. Agora `pontosDeAtributo(nível)` e `pontosDePericia(nível,
+classe)` moram no `regras.js`, e criador e estante leem os dois de lá.
+
+**O bônus da Origem não estava sumido — estava invisível.** Ele sempre
+funcionou, mas vivia no fim da etapa Origem e não aparecia em painel
+nenhum, então na etapa Atributos o número 34 parecia ignorar a Origem.
+Agora tem um medidor próprio ("Bônus da Origem X / Y") e a etapa Atributos
+avisa quando ainda tem ponto de Origem pra colocar. A ordem continua a do
+livro: distribuir os pontos primeiro, aplicar os bônus por cima.
+
+**O tema não trocava na ficha — e a causa era colisão de nome.** A câmara
+(`nucleo.js`) também define `R.Tema`, mas o Tema dela é a PELE. Na
+`ficha.html` os dois carregam e a câmara roda depois, então
+`window.RSS.Tema.botao()` apontava pro objeto errado e explodia. O módulo
+de tema do site agora mora também em `window.TabulaTema`, que é só dele, e
+todas as telas leem de lá.
+
+**Descanso longo saiu do fundo da aba Itens** e foi pra junto das barras
+que ele enche. No celular estava duas rolagens abaixo de onde se procura.
+
+**Bônus do Mestre.** Dois ± ao lado do Descanso ajustam o MÁXIMO de Vida e
+de Reserva. Nenhuma fórmula do livro produz "+5 de Vida nessa missão", mas
+a mesa produz. Fica gravado na ficha, viaja no JSON e sobrevive a fechar o
+navegador.
+
+**A ficha de jogo abre mesmo incompleta.** Antes, ficha sem fechar só
+oferecia "Continuar", que leva ao criador — daí a impressão de que a ficha
+de jogo não existia. Agora tem também "Abrir assim mesmo".

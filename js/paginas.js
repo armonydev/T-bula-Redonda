@@ -380,7 +380,7 @@ function loja(){
 
 /* ───────────────────────── início ───────────────────────── */
 (function(){
-  const T = window.RSS.Tema;
+  const T = window.TabulaTema;
   const slot = $("#troca-tema"); if(slot && T) slot.innerHTML = T.botao();
   if(T) T.perguntar();
   if(T) T.aplicar(T.escolhido() || (window.RSS.CONFIG&&window.RSS.CONFIG.temaPadrao) || "cartoon", false);

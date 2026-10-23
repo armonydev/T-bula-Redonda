@@ -311,6 +311,46 @@ R.Ficha = { montar(){
     R.Anim.delta($("#n-vida"), dv); R.Anim.delta($("#n-res"), dc);
   });
 
+  /* ── bônus do Mestre no máximo de Vida e de Reserva ──
+     Nenhuma fórmula do livro produz "+5 de Vida nessa missão", mas a mesa
+     produz. Fica gravado NA FICHA, então sobrevive a fechar o navegador e
+     viaja no JSON junto com o resto. */
+  function pintarBonus(){
+    const f = ficha.salva || {};
+    const fmt = v => (v > 0 ? "+" : "") + (Number(v) || 0);
+    const bv = $("#bn-vida"), br = $("#bn-res");
+    if(bv) bv.textContent = fmt(f.bonusVida);
+    if(br) br.textContent = fmt(f.bonusReserva);
+  }
+  document.addEventListener("click", ev => {
+    const el = ev.target.closest("[data-bonus-max]"); if(!el) return;
+    const f = ficha.salva;
+    if(!f){ alert("Esta é a ficha de demonstração. Crie ou abra uma ficha sua pra poder ajustar."); return; }
+    const chave = el.dataset.bonusMax === "vida" ? "bonusVida" : "bonusReserva";
+    const antesV = REGRAS.vidaMaxima(ficha.attrs), antesR = REGRAS.reserva(ficha.attrs);
+    f[chave] = (Number(f[chave]) || 0) + (+el.dataset.d);
+    const Arm = window.RSS.Arm; if(Arm) Arm.salvar(f);
+    /* Subiu o teto? A barra acompanha, senão o ganho não serve pra nada
+       no meio da cena. Desceu? O atual é aparado pra não ficar acima. */
+    const depoisV = REGRAS.vidaMaxima(ficha.attrs), depoisR = REGRAS.reserva(ficha.attrs);
+    if(depoisV > antesV) ficha.vida += depoisV - antesV;
+    ficha.vida = Math.max(0, Math.min(ficha.vida, depoisV));
+    if(depoisR > antesR) ficha.carga += depoisR - antesR;
+    ficha.carga = Math.max(0, Math.min(ficha.carga, depoisR));
+    pintarBonus(); derivados(true);
+  });
+  pintarBonus();
+
+  /* O botão de trocar Cartoon ↔ Dark Fantasy existia no HTML e nunca era
+     preenchido. Duas razões, uma em cima da outra: nenhum script desta
+     página chamava botao(), e window.RSS.Tema aqui é o Tema DA CÂMARA (a
+     pele), não este. Por isso vem de window.TabulaTema. */
+  (function(){
+    const T = window.TabulaTema, slot = document.getElementById("troca-tema");
+    if(slot && T) slot.innerHTML = T.botao();
+    if(T) T.aplicar(T.escolhido() || "cartoon", false);
+  })();
+
   $("#nivel").addEventListener("click", e => { e.stopPropagation(); subirNivel(); });
 }};
 })();

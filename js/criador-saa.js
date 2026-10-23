@@ -302,7 +302,7 @@ $("#b-seguir").addEventListener("click",()=>{
 });
 
 (function(){
-  const Tm = window.RSS.Tema;
+  const Tm = window.TabulaTema;
   const slot=$("#troca-tema"); if(slot&&Tm) slot.innerHTML=Tm.botao();
   if(Tm) Tm.aplicar(Tm.escolhido()||(window.RSS.CONFIG&&window.RSS.CONFIG.temaPadrao)||"cartoon", false);
   if(!Arm.temMemoria()) { const m=$("#sem-memoria"); if(m) m.hidden=false; }

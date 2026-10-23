@@ -324,3 +324,22 @@
   outline:3px solid var(--menta);outline-offset:2px}
 .cartao textarea::placeholder,.cartao input::placeholder,
 .feitico input::placeholder,.feitico textarea::placeholder{color:var(--fraco);opacity:.8}
+
+/* ═══ a lista de perícias no celular ═══
+   Três colunas numa tela de 390px espremiam o nome a ponto de "Correr,
+   saltar, escalar" descer uma palavra por linha. No estreito, nome e
+   bônus dividem a primeira linha e as bolinhas ficam com a segunda
+   inteira — que é o que elas precisam pra dar pra acertar com o dedo. */
+.per .bon{display:flex;flex-direction:column;align-items:flex-end;line-height:1}
+.per .bon b{font:700 18px/1 "Fredoka",sans-serif;color:var(--menta)}
+.per .bon i{font-style:normal;font:700 9px/1 "Inter",sans-serif;color:var(--fraco);
+  letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+@media(max-width:560px){
+  .per{grid-template-columns:minmax(0,1fr) auto;
+       grid-template-areas:"nome bon" "graus graus";row-gap:10px;column-gap:10px;padding:12px}
+  .per .nome{grid-area:nome;min-width:0}
+  .per .bon{grid-area:bon}
+  .per .graus{grid-area:graus;justify-content:space-between;gap:6px}
+  .pip{width:40px;height:40px;font-size:12.5px}
+  .per .nome i{display:block;margin-top:3px;line-height:1.35}
+}

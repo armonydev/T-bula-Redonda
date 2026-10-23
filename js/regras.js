@@ -367,15 +367,20 @@ const _nivel  = () => (window.RSS.ficha && window.RSS.ficha.nivel) || 1;
 /* Bônus do Mestre. Nenhuma fórmula do livro produz isso: é o Mestre
    dizendo "você ganhou +5 de Vida nessa missão". Fica guardado na ficha,
    entra depois da fórmula e nunca derruba o máximo abaixo de 1. */
-const _bonus = k => {
+/* Bônus dos ITENS EQUIPADOS. Item no fundo da mochila não empurra número
+   nenhum — é a diferença entre carregar e usar. */
+const _itens = () => {
   const f = window.RSS.ficha && window.RSS.ficha.salva;
-  return (f && Number(f[k])) || 0;
+  const I = window.RSS.Itens;
+  return (f && I) ? I.somaBonus(f.itens || []) : {};
 };
+const _bonus = k => (_itens()[k] || 0);
 window.RSS.REGRAS = {
-  vidaMaxima: a => Math.max(1, vidaMaxima(a, _classe(), _nivel()) + _bonus("bonusVida")),
-  reserva:    a => Math.max(1, reservaMaxima(a, _classe()) + _bonus("bonusReserva")),
+  vidaMaxima: a => Math.max(1, vidaMaxima(a, _classe(), _nivel()) + _bonus("vida")),
+  reserva:    a => Math.max(1, reservaMaxima(a, _classe()) + _bonus("reserva")),
   limite:     limitePorAcao,
-  defesaPassiva, pesoMaximo,
+  defesaPassiva: a => defesaPassiva(a) + _bonus("defesa"),
+  pesoMaximo:    a => pesoMaximo(a) + _bonus("peso"),
   alcance: c => 5 + 5 * c,
   DC: DC.map(d => [d.nome.toLowerCase(), d.dc]),
 };

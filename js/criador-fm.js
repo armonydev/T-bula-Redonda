@@ -165,8 +165,8 @@ const T = {
   return `<section class="cartao">
   <h2>Origem</h2>
   <p class="explica">De onde veio a sua energia amaldiçoada. É a escolha que mais muda o personagem fora do combate.</p>
-  <div class="escolhas">${F.ORIGENS.map(x => `
-    <button class="escolha" type="button" data-origem="${x.id}" aria-pressed="${x.id===f.origemId}">
+  <div class="escolhas-cartao">${F.ORIGENS.map(x => `
+    <button class="escolha-cartao" type="button" data-origem="${x.id}" aria-pressed="${x.id===f.origemId}">
       <b>${esc(x.nome)}</b><i>${esc(x.resumo)}</i>
       <span class="ex">como ${esc(x.exemplos)}</span></button>`).join("")}</div>
 </section>
@@ -205,8 +205,8 @@ ${o ? `<section class="cartao">
   return `<section class="cartao">
   <h2>Especialização</h2>
   <p class="explica">É a classe. Define Pontos de Vida, Pontos de Energia, treinamentos e as habilidades base.</p>
-  <div class="escolhas">${F.ESPECIALIZACOES.map(x => `
-    <button class="escolha" type="button" data-espec="${x.id}" aria-pressed="${x.id===f.especId}"
+  <div class="escolhas-cartao">${F.ESPECIALIZACOES.map(x => `
+    <button class="escolha-cartao" type="button" data-espec="${x.id}" aria-pressed="${x.id===f.especId}"
       ${liberada(x)?"":"disabled title=\"indisponível para a sua Origem\""} style="${liberada(x)?"":"opacity:.4"}">
       <b>${esc(x.nome)}</b><i>${esc(x.resumo)}</i>
       <span class="ex">PV ${x.pv}+CON · ${x.semEnergia?"sem PE (usa Estamina)":`PE ${x.pe}/nível`} · ${x.dadoVida}</span></button>`).join("")}</div>
@@ -223,10 +223,10 @@ ${e ? `<section class="cartao">
   </dl>
   <div class="campo" style="margin-top:12px"><span>Atributo-chave (a CD de Especialização sai dele)</span>
     <div class="fileira-bt">${e.chave.map(k =>
-      `<button class="escolha mini" type="button" data-chave="${k}" aria-pressed="${k===f.chave}">${k}</button>`).join("")}</div></div>
+      `<button class="escolha-cartao mini" type="button" data-chave="${k}" aria-pressed="${k===f.chave}">${k}</button>`).join("")}</div></div>
   ${e.semEnergia ? "" : `<div class="campo" style="margin-top:12px"><span>Atributo da técnica (a CD de Técnica sai dele)</span>
     <div class="fileira-bt">${F.ATRIBUTOS.map(([k]) =>
-      `<button class="escolha mini" type="button" data-atec="${k}" aria-pressed="${k===f.atrTecnica}">${k}</button>`).join("")}</div></div>`}
+      `<button class="escolha-cartao mini" type="button" data-atec="${k}" aria-pressed="${k===f.atrTecnica}">${k}</button>`).join("")}</div></div>`}
 </section>` : ""}`; },
 
 4(){ const e = espc(), a = atributos();

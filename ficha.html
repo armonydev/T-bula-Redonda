@@ -119,22 +119,25 @@
 
           <!-- O Descanso longo estava escondido no rodapé da aba Itens, que
                no celular fica duas rolagens abaixo. Aqui ele mora junto das
-               barras que ele enche, que é onde a pessoa procura.
-               Os ± ao lado são o bônus do Mestre: nenhuma fórmula do livro
-               produz "+5 de Vida nessa missão", mas a mesa produz. -->
+               barras que ele enche.
+               Os ± mexem no valor ATUAL, não no máximo: o máximo já sai da
+               fórmula. E o atual PODE passar do máximo — é assim que entra
+               vida ou carga temporária que o Mestre deu. -->
           <div class="linha-mesa">
             <button class="botao" id="descansar">Descanso longo</button>
-            <span class="ajuste" role="group" aria-label="Bônus do Mestre na Vida máxima">
-              <i>Vida máx.</i>
-              <button type="button" data-bonus-max="vida" data-d="-1" aria-label="Menos Vida máxima">−</button>
-              <b id="bn-vida">+0</b>
-              <button type="button" data-bonus-max="vida" data-d="1" aria-label="Mais Vida máxima">+</button>
+            <span class="ajuste" role="group" aria-label="Vida atual">
+              <i>Vida</i>
+              <button type="button" data-ajusta="vida" data-d="-5" aria-label="Menos 5 de Vida">−5</button>
+              <button type="button" data-ajusta="vida" data-d="-1" aria-label="Menos 1 de Vida">−</button>
+              <button type="button" data-ajusta="vida" data-d="1" aria-label="Mais 1 de Vida">+</button>
+              <button type="button" data-ajusta="vida" data-d="5" aria-label="Mais 5 de Vida">+5</button>
             </span>
-            <span class="ajuste" role="group" aria-label="Bônus do Mestre na Reserva máxima">
-              <i>Reserva máx.</i>
-              <button type="button" data-bonus-max="reserva" data-d="-1" aria-label="Menos Reserva máxima">−</button>
-              <b id="bn-res">+0</b>
-              <button type="button" data-bonus-max="reserva" data-d="1" aria-label="Mais Reserva máxima">+</button>
+            <span class="ajuste" role="group" aria-label="Carga atual">
+              <i>Carga</i>
+              <button type="button" data-ajusta="carga" data-d="-5" aria-label="Menos 5 de Carga">−5</button>
+              <button type="button" data-ajusta="carga" data-d="-1" aria-label="Menos 1 de Carga">−</button>
+              <button type="button" data-ajusta="carga" data-d="1" aria-label="Mais 1 de Carga">+</button>
+              <button type="button" data-ajusta="carga" data-d="5" aria-label="Mais 5 de Carga">+5</button>
             </span>
           </div>
         </div>
@@ -195,14 +198,7 @@
           </div>
         </div>
         <div class="folha" id="f-itens" role="tabpanel" hidden>
-          <div class="lista">
-            <button class="item" aria-expanded="false" data-tilt><b>3 dispositivos de retorno</b><span>Peso 0 · uso único cada</span><span class="detalhe"><em>Ninguém da mesa sabe pra onde eles retornam.</em></span></button>
-            <button class="item" aria-expanded="false" data-tilt><b>Foco do Eco</b><span>Peso 0 · cosmético, sem efeito mecânico</span><span class="detalhe"><em>Garantido de graça pela Classe Ressonante.</em></span></button>
-            <button class="item" aria-expanded="false" data-tilt><b>Kit de primeiros socorros</b><span>Peso 1 · 10% da Vida, uso único</span><span class="detalhe"><em>Custa 10 Marcos pra repor.</em></span></button>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap">
-            <span style="font-size:12.5px;color:var(--fraco);font-weight:700">peso 1 de 14</span>
-          </div>
+          <div id="itens-palco"></div>
         </div>
       </div>
     </div>
@@ -258,6 +254,7 @@
 
 <!-- ordem importa -->
 <script src="js/regras.js"></script>
+<script src="js/itens.js"></script>
 <script src="js/armazenar.js"></script>
 <script src="js/retrato.js"></script>
 <script src="js/nucleo.js"></script>

@@ -301,3 +301,51 @@ input[type=range]:focus-visible{outline:3px solid var(--branco);outline-offset:3
   border:1px solid var(--traco);background:var(--painel);color:var(--suave);font:700 14px/1 "Inter",sans-serif}
 .linha-mesa .ajuste button:hover{background:var(--painel3);color:var(--branco)}
 @media(max-width:480px){.linha-mesa{gap:7px}.linha-mesa .ajuste i{display:none}}
+
+/* ═══ a aba Itens ═══ */
+.itens-topo{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.itens-topo .peso{font:700 12.5px/1 "Inter","Nunito",sans-serif;color:var(--fraco)}
+.itens-topo .peso.demais{color:var(--vida)}
+.itens-topo .equipado-soma{font:700 11.5px/1 "Inter",sans-serif;color:var(--menta);
+  background:color-mix(in srgb,var(--menta) 14%,transparent);border-radius:999px;padding:5px 10px}
+.item-fic{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;
+  padding:12px 14px;border-radius:14px;background:var(--painel2);border:1px solid var(--traco);margin-bottom:8px}
+:root[data-tema="cartoon"] .item-fic{border-width:3px;border-radius:16px}
+.item-fic.on{border-color:var(--menta)}
+.item-fic .cabeca-i{min-width:0;flex:1 1 220px}
+.item-fic b{display:block;font:700 14.5px/1.25 "Inter","Fredoka",sans-serif;color:var(--branco)}
+.item-fic .linha{display:block;font:700 11.5px/1.3 "Inter",sans-serif;color:var(--menta);margin-top:3px}
+.item-fic em{display:block;font-style:normal;font-size:12.5px;line-height:1.45;color:var(--suave);margin-top:6px}
+.acoes-i{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.botao.peq{padding:6px 11px;font-size:11.5px}
+.botao.calado{background:var(--painel);color:var(--suave)}
+.botao.perigo{background:color-mix(in srgb,var(--vida) 22%,var(--painel));color:var(--branco)}
+.nada-itens{font-size:13px;color:var(--fraco);padding:14px 0}
+
+.colar-item{margin-top:14px;padding:13px 15px;border-radius:14px;background:var(--painel2);
+  border:1px dashed var(--traco)}
+:root[data-tema="cartoon"] .colar-item{border-width:3px}
+.colar-item summary{cursor:pointer;font:700 13px/1 "Inter","Fredoka",sans-serif;color:var(--branco)}
+.colar-item textarea{width:100%;margin-top:10px;font:600 12.5px/1.5 ui-monospace,Menlo,Consolas,monospace;
+  color:var(--branco);background:var(--chao2);border:1px solid var(--traco);border-radius:10px;padding:10px 12px;resize:vertical}
+.explica-i{font-size:12px;line-height:1.5;color:var(--fraco);margin:9px 0 0}
+.explica-i code{font:600 11.5px/1 ui-monospace,Menlo,Consolas,monospace;background:var(--painel3);
+  border-radius:5px;padding:2px 5px;color:var(--suave)}
+.aviso-i{margin:8px 0 0;font:700 12px/1.4 "Inter",sans-serif;min-height:1em}
+.aviso-i.ruim{color:var(--vida)} .aviso-i.bom{color:var(--menta)}
+
+/* o grupo de aparência da ficha não pode ficar colado nos vizinhos */
+.ctrl{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.ctrl .risca{width:1px;height:20px;background:var(--traco);flex:none}
+
+/* bênção, maldição e o que não sai */
+.selo-tipo{display:inline-block;margin-left:8px;vertical-align:middle;
+  font:700 9.5px/1 "Inter",sans-serif;letter-spacing:.07em;text-transform:uppercase;
+  border-radius:999px;padding:4px 8px;background:var(--painel3);color:var(--fraco)}
+.item-fic.t-bencao{border-color:color-mix(in srgb,var(--ouro) 55%,var(--traco))}
+.item-fic.t-bencao .selo-tipo{background:color-mix(in srgb,var(--ouro) 20%,transparent);color:var(--ouro)}
+.item-fic.t-bencao .linha{color:var(--ouro)}
+.item-fic.t-maldicao{border-color:color-mix(in srgb,var(--vida) 55%,var(--traco))}
+.item-fic.t-maldicao .selo-tipo{background:color-mix(in srgb,var(--vida) 20%,transparent);color:var(--vida)}
+.item-fic.t-maldicao .linha{color:var(--vida)}
+.selo-tipo.preso{background:var(--traco);color:var(--suave)}

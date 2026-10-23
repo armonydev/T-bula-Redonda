@@ -359,8 +359,24 @@ function pintarPainel(){
 }
 
 /* ── render ── */
+/* Repintar a etapa inteira é o que mantém o criador simples — mas
+   innerHTML joga a rolagem pro topo. Com quinze perícias na tela, clicar
+   na última te mandava pra primeira a cada ponto gasto. Guardar e devolver
+   a posição resolve sem precisar de render incremental. */
+let etapaAnterior = -1;
 function pintar(){
-  $("#palco").innerHTML = T[etapa]();
+  const mesmaEtapa = etapaAnterior === etapa;
+  const rolagem = window.scrollY;
+  etapaAnterior = etapa;
+  /* ⚠ Segurar a altura ANTES de trocar o conteúdo.
+     Sem isso o documento encolhe por um instante, o navegador apara a
+     rolagem pra caber no que sobrou, e aí não adianta mais mandar rolar
+     de volta: o valor já foi perdido. Com o min-height a página não
+     encolhe, então nada é aparado. */
+  const palco = $("#palco");
+  const alturaAntes = mesmaEtapa ? palco.offsetHeight : 0;
+  if(alturaAntes) palco.style.minHeight = alturaAntes + "px";
+  palco.innerHTML = T[etapa]();
   const probs = problemas();
   $("#etapas").innerHTML = NOMES.map((n,i)=>{
     const temErro = probs.some(p=>p.etapa===i);
@@ -371,8 +387,27 @@ function pintar(){
   pintarPainel();
   recado(probs);
   $("#b-voltar").disabled = etapa===0;
+  /* Trocou de etapa? Começa do topo, que é o esperado. Continuou na
+     mesma? Fica onde estava.
+     ⚠ Tem que ser DEPOIS do próximo quadro. Trocar o innerHTML derruba a
+     altura do documento por um instante, o navegador apara a rolagem pra
+     caber, e um scrollTo síncrono aqui era aparado junto — voltava pra
+     zero do mesmo jeito. O rAF espera o layout refazer. */
   $("#b-seguir").textContent = etapa===NOMES.length-1 ? "Salvar" : "Seguir";
-  window.scrollTo({top:0,behavior:"smooth"});
+  /* ⚠ ERA ESTA LINHA. Havia um window.scrollTo({top:0,behavior:"smooth"})
+     solto no fim do pintar(), sem condição nenhuma: todo clique na tela,
+     até o de gastar um ponto de perícia, mandava a página subir — e como
+     era "smooth", a subida acontecia ~400ms DEPOIS, o que fazia parecer
+     bug aleatório em vez de linha de código.
+     Subir só faz sentido quando a etapa muda; aí sim a pessoa quer ler do
+     começo. Continuando na mesma etapa, ela fica onde estava. */
+  if(mesmaEtapa){
+    window.scrollTo(0, rolagem);
+    if(document.body && document.body.scrollTop) document.body.scrollTop = rolagem;
+  } else {
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
+  requestAnimationFrame(() => { palco.style.minHeight = ""; });
 }
 const mexeu = () => { Arm.salvar(ficha); pintar(); };
 

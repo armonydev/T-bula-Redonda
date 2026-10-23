@@ -121,7 +121,12 @@
   background:var(--painel);border:3px solid var(--traco);border-radius:14px;padding:11px 14px;width:100%}
 .campo input:focus,.campo textarea:focus{outline:3px solid var(--menta);outline-offset:2px}
 .campo textarea{min-height:92px;resize:vertical}
-.linha-campos{display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+/* ⚠ align-items:start. Um item de grid, por padrão, ESTICA até a altura
+   da linha inteira — e a linha do "Quem é" tem o retrato de 150px nela.
+   Sem isto, as caixas de Nome e Nível viravam dois retângulos enormes com
+   o texto no pé. Mesma coisa na lista de Classes e de Origens: um cartão
+   fechado esticava até a altura do mais alto da fileira. */
+.linha-campos{display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));align-items:start}
 .contador{display:flex;align-items:center;gap:8px}
 .contador .v{font-family:"Fredoka",sans-serif;font-weight:700;font-size:20px;color:var(--branco);
   min-width:26px;text-align:center}
@@ -228,19 +233,24 @@
    entre depois.
    ═══════════════════════════════════════════════════════════════════════ */
 
-.escolhas{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));margin-top:12px}
-.escolha{display:block;text-align:left;cursor:pointer;padding:14px 15px;border-radius:14px;
+/* ⚠ NOME PRÓPRIO, e não ".escolhas".
+   O criador do Ressonância já tinha uma .escolhas lá em cima, que é lista
+   de UMA coluna com cartão sanfonado. Esta aqui, do montador do Jujutsu, é
+   grade de vários cartões — e como vinha depois no arquivo, ganhava e
+   quebrava a lista de Classes e de Origens do Ressonância. */
+.escolhas-cartao{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));margin-top:12px;align-items:start}
+.escolha-cartao{display:block;text-align:left;cursor:pointer;padding:14px 15px;border-radius:14px;
   background:var(--painel2);border:1px solid var(--traco);color:var(--suave);font:inherit}
-:root[data-tema="cartoon"] .escolha{border-width:3px;box-shadow:0 4px 0 var(--traco)}
-.escolha:hover:not(:disabled){background:var(--painel3)}
-.escolha[aria-pressed="true"]{border-color:var(--lilas);background:var(--painel3);
+:root[data-tema="cartoon"] .escolha-cartao{border-width:3px;box-shadow:0 4px 0 var(--traco)}
+.escolha-cartao:hover:not(:disabled){background:var(--painel3)}
+.escolha-cartao[aria-pressed="true"]{border-color:var(--lilas);background:var(--painel3);
   box-shadow:inset 0 0 0 1px var(--lilas)}
-.escolha b{display:block;font:700 15px/1.2 "Inter","Fredoka",sans-serif;color:var(--branco);margin-bottom:4px}
-.escolha i{display:block;font-style:normal;font-size:12.5px;line-height:1.45}
-.escolha .ex{display:block;margin-top:7px;font-size:11.5px;color:var(--fraco)}
-.escolha.mini{display:inline-block;padding:9px 15px;border-radius:999px;margin:0 6px 6px 0;
+.escolha-cartao b{display:block;font:700 15px/1.2 "Inter","Fredoka",sans-serif;color:var(--branco);margin-bottom:4px}
+.escolha-cartao i{display:block;font-style:normal;font-size:12.5px;line-height:1.45}
+.escolha-cartao .ex{display:block;margin-top:7px;font-size:11.5px;color:var(--fraco)}
+.escolha-cartao.mini{display:inline-block;padding:9px 15px;border-radius:999px;margin:0 6px 6px 0;
   font:700 13px/1 "Inter",sans-serif}
-.escolha:disabled{cursor:not-allowed}
+.escolha-cartao:disabled{cursor:not-allowed}
 
 .lista-tracos{margin:12px 0 0;display:grid;gap:9px}
 .lista-tracos dt{font:700 13px/1.3 "Inter","Nunito",sans-serif;color:var(--branco)}

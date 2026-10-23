@@ -115,7 +115,7 @@ function escolherSistema(titulo, linha, destino){
         ${arte(s.banner || s.capa, s.nome, s.cor)}
         <span class="sombra"></span>
         <span class="marca">${esc(s.sigla)}${s.edicao ? " · " + esc(s.edicao) : ""}</span>
-        <span class="txt"><b>${esc(s.nome)}</b><i>${esc(s.resumo.split(".")[0])}</i></span>
+        <span class="txt"><b>${esc(s.nome)}</b></span>
       </a>`).join("")}</div>`;
 }
 

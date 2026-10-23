@@ -251,3 +251,38 @@ navegador.
 **A ficha de jogo abre mesmo incompleta.** Antes, ficha sem fechar só
 oferecia "Continuar", que leva ao criador — daí a impressão de que a ficha
 de jogo não existia. Agora tem também "Abrir assim mesmo".
+
+---
+
+## Correções 23/10 (tarde)
+
+**Caixas gigantes no "Quem é" e na lista de Classes.** Item de grid estica
+até a altura da linha inteira por padrão, e a linha do "Quem é" tem o
+retrato de 150px nela. `align-items:start` nos dois lugares.
+
+**A lista de Classes virou grade de três colunas sem ninguém pedir.** A
+`.escolhas` que eu escrevi pro montador do Jujutsu tinha o mesmo nome da
+`.escolhas` do criador do Ressonância — e vinha depois no arquivo, então
+ganhava. Renomeada pra `.escolhas-cartao` / `.escolha-cartao`.
+
+**A página subia sozinha a cada clique.** Havia um
+`window.scrollTo({top:0,behavior:"smooth"})` solto no fim do `pintar()`,
+sem condição. Como era "smooth", a subida acontecia ~400ms depois do
+clique, o que fazia parecer bug aleatório. Agora só sobe quando a etapa
+muda de verdade, e o `min-height` segura a altura durante o repinte pra
+rolagem não ser aparada.
+
+**Os ± da ficha mexem no valor ATUAL**, não no máximo — e o atual pode
+passar do máximo, que é como entra vida ou carga temporária. O máximo
+continua saindo da fórmula.
+
+**A ficha abre no Dark Fantasy**, igual ao resto do site. O Cartoon
+continua lá, só não é mais o padrão.
+
+**Inventário de verdade, com código pra colar** (`js/itens.js`). Um item é
+um JSON curto — `{"nome":"Corda de cânhamo","peso":1}` tem 36 caracteres.
+Cabe numa mensagem. O jogador cola na aba Itens e o item entra na ficha
+dele, viaja no export e volta no import. Item com `bonus` só empurra
+número quando está **equipado**; o resto vai em `efeito`, como texto, e
+quem aplica é o Mestre. Os erros de JSON foram traduzidos: aspas curvas
+(que o WhatsApp cria sozinho) e vírgula sobrando têm recado próprio.

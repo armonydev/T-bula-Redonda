@@ -311,35 +311,158 @@ R.Ficha = { montar(){
     R.Anim.delta($("#n-vida"), dv); R.Anim.delta($("#n-res"), dc);
   });
 
-  /* ── bônus do Mestre no máximo de Vida e de Reserva ──
-     Nenhuma fórmula do livro produz "+5 de Vida nessa missão", mas a mesa
-     produz. Fica gravado NA FICHA, então sobrevive a fechar o navegador e
-     viaja no JSON junto com o resto. */
-  function pintarBonus(){
-    const f = ficha.salva || {};
-    const fmt = v => (v > 0 ? "+" : "") + (Number(v) || 0);
-    const bv = $("#bn-vida"), br = $("#bn-res");
-    if(bv) bv.textContent = fmt(f.bonusVida);
-    if(br) br.textContent = fmt(f.bonusReserva);
+  /* ── mexer na Vida e na Carga atuais ──
+     O máximo já sai da fórmula e não é pra ser editado. O que a mesa mexe
+     é o valor ATUAL — e ele PODE passar do máximo: é assim que entra vida
+     ou carga temporária que o Mestre deu. O piso é zero; teto não tem. */
+  document.addEventListener("click", ev => {
+    const el = ev.target.closest("[data-ajusta]"); if(!el) return;
+    const qual = el.dataset.ajusta, d = +el.dataset.d;
+    const antes = qual === "vida" ? ficha.vida : ficha.carga;
+    const depois = Math.max(0, antes + d);
+    if(qual === "vida") ficha.vida = depois; else ficha.carga = depois;
+    derivados(true);
+    R.Anim.delta($(qual === "vida" ? "#n-vida" : "#n-res"), depois - antes);
+  });
+
+
+  /* ═══ a aba Itens ═══
+     Montada da ficha salva, não escrita à mão no HTML. O que o Kainã
+     pediu: um item é um pedaço de JSON pequeno o bastante pra caber numa
+     mensagem — ele manda o código, o jogador cola aqui e o item entra. */
+  function itensDaFicha(){
+    const f = ficha.salva;
+    if(!f) return null;
+    if(!Array.isArray(f.itens)) f.itens = [];
+    return f.itens;
+  }
+  function pintarItens(){
+    const palco = document.getElementById("itens-palco"); if(!palco) return;
+    const I = window.RSS.Itens, lista = itensDaFicha();
+    const seg = t => String(t ?? "").replace(/[&<>"']/g, c =>
+      ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    if(!lista){
+      palco.innerHTML = `<p class="nada-itens">Esta é a ficha de demonstração.
+        Crie ou abra uma ficha sua pra ter inventário.</p>`;
+      return;
+    }
+    const peso = I.pesoTotal(lista), max = REGRAS.pesoMaximo(ficha.attrs);
+    const soma = I.somaBonus(lista);
+    const ativos = I.BONUS.filter(([k]) => soma[k]).map(([k,r]) =>
+      `${r} ${soma[k] > 0 ? "+" : ""}${soma[k]}`);
+    palco.innerHTML = `
+      <div class="itens-topo">
+        <span class="peso ${peso > max ? "demais" : ""}">peso ${peso} de ${max}</span>
+        ${ativos.length ? `<span class="equipado-soma">equipado: ${seg(ativos.join(" · "))}</span>` : ""}
+      </div>
+      <div class="lista">${lista.length ? lista.map((it,i) => {
+        const b = I.BONUS.filter(([k]) => it.bonus && it.bonus[k])
+          .map(([k,r]) => `${r} ${it.bonus[k] > 0 ? "+" : ""}${it.bonus[k]}`);
+        const tp = I.TIPOS[it.tipo] || I.TIPOS.comum;
+        return `<div class="item-fic ${it.equipado ? "on" : ""} t-${seg(it.tipo || "comum")}">
+          <div class="cabeca-i">
+            <b>${seg(it.nome)}${it.tipo && it.tipo !== "comum"
+              ? `<span class="selo-tipo">${seg(tp.rotulo)}</span>` : ""}${it.preso
+              ? `<span class="selo-tipo preso">não sai</span>` : ""}</b>
+            <span class="linha">Peso ${it.peso}${b.length ? " · " + seg(b.join(" · ")) : ""}</span>
+            ${it.efeito ? `<em>${seg(it.efeito)}</em>` : ""}
+          </div>
+          <div class="acoes-i">
+            ${b.length && !it.preso ? `<button class="botao peq ${it.equipado ? "" : "calado"}" type="button" data-equipar="${i}">
+              ${it.equipado ? "Equipado" : "Equipar"}</button>` : ""}
+            <button class="botao peq calado" type="button" data-copiar-item="${i}">Copiar código</button>
+            <button class="botao peq perigo" type="button" data-tirar-item="${i}">Tirar</button>
+          </div></div>`;}).join("")
+        : `<p class="nada-itens">Nenhum item ainda. Cole um código aí embaixo.</p>`}</div>
+
+      <details class="colar-item" ${lista.length ? "" : "open"}>
+        <summary>Colar o código de um item</summary>
+        <p class="explica-i">Um item cabe em 40 caracteres. Dá pra colar um só, ou vários de uma vez
+          entre colchetes. Só <b>nome</b> é obrigatório.</p>
+        <textarea id="item-json" rows="3" spellcheck="false"
+          placeholder='{"nome":"Corda de cânhamo","peso":1}'></textarea>
+        <p class="aviso-i" id="item-aviso"></p>
+        <div class="acoes-i">
+          <button class="botao" type="button" id="item-add">Adicionar</button>
+          <button class="botao calado" type="button" id="item-exemplo">Pôr um exemplo</button>
+          ${lista.length ? `<button class="botao calado" type="button" id="item-copiar-tudo">Copiar os ${lista.length}</button>` : ""}
+        </div>
+        <p class="explica-i"><b>tipo</b> aceita <code>bencao</code> ou <code>maldicao</code>
+          (sem nada, é item comum). Bônus negativo é malefício e funciona igual:
+          <code>"defesa":-2</code>. Maldição com <code>"preso":true</code> entra equipada
+          e <b>não sai pela ficha</b> — tirar é cena de mesa.</p>
+        <p class="explica-i">Campos que a ficha entende em <b>bonus</b>:
+          ${I.BONUS.map(([k,r]) => `<code>${k}</code> (${r.toLowerCase()})`).join(" · ")}.
+          Qualquer outro efeito vai em <b>efeito</b>, como texto — quem aplica é o Mestre.</p>
+      </details>`;
+  }
+  function salvarItens(){
+    const Arm = window.RSS.Arm;
+    if(Arm && ficha.salva) Arm.salvar(ficha.salva);
+    pintarItens(); derivados(true);
+  }
+  async function copiar(texto, botao){
+    try{ await navigator.clipboard.writeText(texto); }
+    catch{ /* clipboard bloqueado (file://, http) — cai no jeito antigo */
+      const t = document.createElement("textarea");
+      t.value = texto; t.style.position = "fixed"; t.style.opacity = "0";
+      document.body.append(t); t.select();
+      try{ document.execCommand("copy"); }catch{}
+      t.remove();
+    }
+    if(botao){ const antes = botao.textContent; botao.textContent = "Copiado"; 
+      setTimeout(() => { botao.textContent = antes; }, 1400); }
   }
   document.addEventListener("click", ev => {
-    const el = ev.target.closest("[data-bonus-max]"); if(!el) return;
-    const f = ficha.salva;
-    if(!f){ alert("Esta é a ficha de demonstração. Crie ou abra uma ficha sua pra poder ajustar."); return; }
-    const chave = el.dataset.bonusMax === "vida" ? "bonusVida" : "bonusReserva";
-    const antesV = REGRAS.vidaMaxima(ficha.attrs), antesR = REGRAS.reserva(ficha.attrs);
-    f[chave] = (Number(f[chave]) || 0) + (+el.dataset.d);
-    const Arm = window.RSS.Arm; if(Arm) Arm.salvar(f);
-    /* Subiu o teto? A barra acompanha, senão o ganho não serve pra nada
-       no meio da cena. Desceu? O atual é aparado pra não ficar acima. */
-    const depoisV = REGRAS.vidaMaxima(ficha.attrs), depoisR = REGRAS.reserva(ficha.attrs);
-    if(depoisV > antesV) ficha.vida += depoisV - antesV;
-    ficha.vida = Math.max(0, Math.min(ficha.vida, depoisV));
-    if(depoisR > antesR) ficha.carga += depoisR - antesR;
-    ficha.carga = Math.max(0, Math.min(ficha.carga, depoisR));
-    pintarBonus(); derivados(true);
+    const I = window.RSS.Itens, lista = itensDaFicha();
+    let el;
+    if((el = ev.target.closest("[data-equipar]")) && lista){
+      const it = lista[+el.dataset.equipar]; it.equipado = !it.equipado; return salvarItens(); }
+    if((el = ev.target.closest("[data-tirar-item]")) && lista){
+      const it = lista[+el.dataset.tirarItem];
+      /* Item preso não sai por botão. É o que separa uma Maldição de um
+         item ruim: item ruim você larga. */
+      if(it.preso){
+        alert(`"${it.nome}" não sai.\n\nTirar uma Maldição é cena de mesa — ` +
+          `ritual, troca, alguém pagando por você. Quando acontecer, o Mestre tira daqui.`);
+        return;
+      }
+      if(!confirm(`Tirar "${it.nome}" da ficha?`)) return;
+      lista.splice(+el.dataset.tirarItem, 1); return salvarItens(); }
+    if((el = ev.target.closest("[data-copiar-item]")) && lista){
+      return copiar(I.paraTexto(lista[+el.dataset.copiarItem]), el); }
+    if((el = ev.target.closest("#item-copiar-tudo")) && lista){
+      return copiar(I.paraTexto(lista), el); }
+    if(ev.target.closest("#item-exemplo")){
+      const cx = document.getElementById("item-json");
+      cx.value = I.paraTexto([
+        { nome:"Colete do Olho", peso:2,
+          efeito:"Doado pelo José Carlos. Cheira a arquivo velho.",
+          bonus:{ defesa:2, reducao:1 }, equipado:true },
+        { nome:"Bênção da Vigília", tipo:"bencao",
+          efeito:"Uma noite por mês você escuta quem morreu ali.",
+          bonus:{ reserva:4 } },
+        { nome:"Anel do Dedo Torto", tipo:"maldicao", preso:true,
+          efeito:"Não sai. Você sente a direção da mata, sempre.",
+          bonus:{ reducao:2, defesa:-2, iniciativa:-1 } },
+      ], true);
+      cx.focus(); return; }
+    if(ev.target.closest("#item-add") && lista){
+      const cx = document.getElementById("item-json");
+      const aviso = document.getElementById("item-aviso");
+      const r = I.lerTexto(cx.value);
+      if(r.erro){ aviso.textContent = r.erro; aviso.className = "aviso-i ruim"; return; }
+      lista.push(...r.itens);
+      cx.value = "";
+      salvarItens();
+      const a2 = document.getElementById("item-aviso");
+      if(a2){ a2.textContent = r.itens.length === 1
+        ? `"${r.itens[0].nome}" entrou na ficha.`
+        : `${r.itens.length} itens entraram na ficha.`;
+        a2.className = "aviso-i bom"; }
+      return; }
   });
-  pintarBonus();
+  pintarItens();
 
   /* O botão de trocar Cartoon ↔ Dark Fantasy existia no HTML e nunca era
      preenchido. Duas razões, uma em cima da outra: nenhum script desta
@@ -348,7 +471,10 @@ R.Ficha = { montar(){
   (function(){
     const T = window.TabulaTema, slot = document.getElementById("troca-tema");
     if(slot && T) slot.innerHTML = T.botao();
-    if(T) T.aplicar(T.escolhido() || "cartoon", false);
+    /* O padrão é o do site (Dark Fantasy). O Cartoon existe aqui, mas só
+       quando a pessoa pede — antes ele era o padrão e a ficha abria numa
+       cor diferente do resto. */
+    if(T) T.aplicar(T.escolhido() || (window.RSS.CONFIG && window.RSS.CONFIG.temaPadrao) || "escuro", false);
   })();
 
   $("#nivel").addEventListener("click", e => { e.stopPropagation(); subirNivel(); });

@@ -1,0 +1,23 @@
+═══ livros/ — os PDFs que o site abre ═══
+
+O botão "Ler o PDF" só aparece pros arquivos listados em js/config.js, na
+lista "livros". É assim que ele nunca abre uma aba em branco: o que não
+está na lista mostra um aviso dizendo onde largar o arquivo.
+
+OS QUATRO ESTÃO AQUI E JÁ ESTÃO NA LISTA
+
+  ressonancia-26-1.pdf                                      86 páginas · seu
+  saa-26-1.pdf                                              20 páginas · Japê, Pedro Henrique e Luiz Fernando
+  Feiticeiros & Maldições - Livro de Regras v2.5.2.pdf     368 páginas · Projeto Onigiri
+  Feiticeiros e Maldições - Enciclopédia Amaldiçoada v0.9.pdf  264 páginas · Projeto Onigiri
+
+Os dois do Jujutsu ficaram com o nome original, com espaço, acento e "&".
+Não precisa renomear: o site codifica o caminho na hora de montar o link.
+
+SE UM DIA QUISER TIRAR UM DE CIRCULAÇÃO
+  Apague a linha dele da lista "livros" em js/config.js. O botão some, o
+  resto do site continua igual. Não precisa mexer em mais nada.
+
+SE QUISER ACRESCENTAR OUTRO
+  Largue o arquivo aqui e acrescente o caminho na mesma lista, com o nome
+  exato que está na pasta.

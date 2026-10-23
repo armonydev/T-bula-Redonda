@@ -1,0 +1,280 @@
+/* ═══ casca.css — o painel: trilho lateral, barra de cima, largura cheia ═══
+   Só vale nas páginas de catálogo/sistema/compêndio (body[data-casca]).
+   A estante, o criador e a ficha continuam na casca antiga, porque elas
+   são telas de trabalho e não de navegação. */
+
+body[data-casca]{margin:0}
+body[data-casca] .tela{max-width:none;margin:0;padding:0}
+
+/* ── trilho lateral ── */
+.trilho-lat{position:fixed;left:0;top:0;bottom:0;width:62px;z-index:40;
+  background:var(--painel);border-right:1px solid var(--traco);
+  display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 0}
+:root[data-tema="cartoon"] .trilho-lat{border-right:3px solid var(--traco)}
+.trilho-lat .marca-mini{width:38px;height:38px;border-radius:12px;background:var(--lilas);
+  display:grid;place-items:center;margin-bottom:10px;flex:none}
+.trilho-lat .marca-mini svg{width:21px;height:21px;fill:var(--traco)}
+.trilho-lat a{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+  color:var(--fraco);text-decoration:none;transition:.16s;position:relative;flex:none}
+.trilho-lat a svg{width:20px;height:20px;fill:currentColor}
+.trilho-lat a:hover{background:var(--painel3);color:var(--suave)}
+.trilho-lat a[aria-current="page"]{background:var(--lilas);color:#fff}
+:root[data-tema="cartoon"] .trilho-lat a[aria-current="page"]{color:var(--traco)}
+.trilho-lat a[aria-current="page"]::before{content:"";position:absolute;left:-12px;top:50%;
+  transform:translateY(-50%);width:3px;height:20px;border-radius:99px;background:var(--lilas)}
+.trilho-lat .risca-v{width:26px;height:1px;background:var(--traco);margin:6px 0;flex:none}
+.trilho-lat .fim{margin-top:auto}
+/* dica ao passar o mouse, já que só tem ícone */
+.trilho-lat a::after{content:attr(data-dica);position:absolute;left:52px;white-space:nowrap;
+  background:var(--painel3);color:var(--suave);font:700 11.5px/1 "Inter","Nunito",sans-serif;
+  padding:7px 10px;border-radius:8px;opacity:0;pointer-events:none;transition:.16s;
+  border:1px solid var(--traco)}
+.trilho-lat a:hover::after{opacity:1;left:58px}
+@media(max-width:760px){
+  .trilho-lat{flex-direction:row;top:auto;bottom:0;width:100%;height:56px;padding:0 10px;
+    justify-content:space-around;border-right:0;border-top:1px solid var(--traco)}
+  .trilho-lat .marca-mini,.trilho-lat .risca-v{display:none}
+  .trilho-lat .fim{margin:0}
+  .trilho-lat a::after{display:none}
+  .trilho-lat a[aria-current="page"]::before{left:50%;top:auto;bottom:-10px;transform:translateX(-50%);
+    width:18px;height:3px}
+}
+
+/* ── área principal ── */
+.area{margin-left:62px;min-height:100vh}
+@media(max-width:760px){.area{margin-left:0;padding-bottom:62px}}
+
+.barra-topo{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:14px;
+  padding:13px 26px;background:color-mix(in srgb,var(--chao) 86%,transparent);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--traco)}
+:root[data-tema="cartoon"] .barra-topo{border-bottom:3px solid var(--traco)}
+@media(max-width:760px){.barra-topo{padding:11px 14px;flex-wrap:wrap}}
+
+.medidor-topo{display:flex;align-items:center;gap:11px;min-width:190px;flex:none}
+@media(max-width:1000px){.medidor-topo{display:none}}
+.medidor-topo .txt{min-width:0}
+.medidor-topo .txt b{display:block;font:700 10.5px/1.3 "Inter","Nunito",sans-serif;color:var(--lilas)}
+.medidor-topo .txt span{display:block;font:700 12.5px/1.3 "Inter","Nunito",sans-serif;color:var(--branco)}
+.medidor-topo .pct{font:700 15px/1 "Inter","Nunito",sans-serif;color:var(--branco)}
+.medidor-topo .trilha{height:4px;border-radius:99px;background:var(--painel3);margin-top:5px;overflow:hidden}
+.medidor-topo .trilha i{display:block;height:100%;border-radius:99px;background:var(--lilas)}
+
+.busca-topo{flex:1;position:relative;max-width:660px;margin:0 auto}
+.busca-topo input{width:100%;font:600 14px/1.4 "Nunito","Inter",sans-serif;color:var(--branco);
+  background:var(--painel);border:1px solid var(--traco);border-radius:12px;padding:11px 58px 11px 42px}
+:root[data-tema="cartoon"] .busca-topo input{border-width:3px;border-radius:999px}
+.busca-topo input:focus{outline:2px solid var(--lilas);outline-offset:1px}
+.busca-topo > svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:17px;height:17px;fill:var(--fraco)}
+.busca-topo kbd{position:absolute;right:11px;top:50%;transform:translateY(-50%);font:700 10.5px/1 "Inter",monospace;
+  color:var(--fraco);background:var(--painel3);border:1px solid var(--traco);border-radius:6px;padding:4px 7px}
+@media(max-width:760px){.busca-topo kbd{display:none}}
+
+.acoes-topo{display:flex;align-items:center;gap:9px;flex:none}
+.acoes-topo .redondo{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;cursor:pointer;
+  background:var(--painel);border:1px solid var(--traco);color:var(--fraco)}
+:root[data-tema="cartoon"] .acoes-topo .redondo{border-width:3px;box-shadow:0 3px 0 var(--traco)}
+.acoes-topo .redondo:hover{color:var(--suave);background:var(--painel3)}
+.acoes-topo .redondo svg{width:18px;height:18px;fill:currentColor}
+
+.miolo{padding:22px 26px 90px;max-width:1560px}
+@media(max-width:760px){.miolo{padding:16px 14px 80px}}
+
+/* ── carrossel com os vizinhos aparecendo ── */
+.vitrola{position:relative;margin:4px 0 8px}
+.vitrola .pista{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
+  padding:10px calc(50% - 430px);}
+@media(max-width:1000px){.vitrola .pista{padding:10px calc(50% - 44%)}}
+.vitrola .pista::-webkit-scrollbar{display:none}
+.vitrola .cartaz{flex:0 0 860px;max-width:88vw;scroll-snap-align:center;position:relative;height:420px;
+  border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;border:1px solid var(--traco);
+  transform:scale(.88);opacity:.42;transition:transform .35s cubic-bezier(.2,.9,.25,1),opacity .35s}
+:root[data-tema="cartoon"] .vitrola .cartaz{border-width:3px;border-radius:22px}
+.vitrola .cartaz.meio{transform:scale(1);opacity:1}
+@media(max-width:760px){.vitrola .cartaz{height:250px}}
+.vitrola .cartaz .arte{position:absolute;inset:0}
+.vitrola .cartaz .texto{position:absolute;inset:auto 0 0 0;padding:28px 32px;
+  background:linear-gradient(transparent,#000a 42%,#000e)}
+.vitrola .cartaz .texto .risquinho{display:block;width:34px;height:3px;background:var(--lilas);border-radius:99px;margin-bottom:12px}
+.vitrola .cartaz .texto b{display:block;font:700 30px/1.15 "Inter","Fredoka",sans-serif;color:#fff;margin-bottom:6px}
+.vitrola .cartaz .texto span{font-size:14px;color:#ddd8e8}
+@media(max-width:760px){.vitrola .cartaz .texto{padding:18px 20px}.vitrola .cartaz .texto b{font-size:20px}}
+.vitrola .seta{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:38px;height:38px;
+  border-radius:50%;display:grid;place-items:center;cursor:pointer;background:var(--painel);
+  border:1px solid var(--traco);color:var(--suave);font-size:16px}
+.vitrola .seta.ant{left:12px} .vitrola .seta.prox{right:12px}
+.vitrola .seta:hover{background:var(--painel3)}
+@media(max-width:760px){.vitrola .seta{display:none}}
+.bolinhas{display:flex;gap:7px;justify-content:center;margin-top:10px}
+.bolinhas button{width:8px;height:8px;border-radius:99px;border:0;background:var(--traco);cursor:pointer;padding:0;transition:.2s}
+.bolinhas button[aria-current="true"]{background:var(--lilas);width:24px}
+
+/* ── faixas de conteúdo ── */
+.faixa-tit{display:flex;align-items:center;gap:12px;margin:34px 0 14px}
+.faixa-tit h2{margin:0;font:700 21px/1 "Inter","Fredoka",sans-serif;color:var(--branco)}
+.faixa-tit .mais{margin-left:auto;display:flex;align-items:center;gap:8px}
+.faixa-tit .mais a{font:700 12.5px/1 "Inter","Nunito",sans-serif;color:var(--fraco);text-decoration:none}
+.faixa-tit .mais a:hover{color:var(--suave)}
+.faixa-tit .mais button{width:32px;height:32px;border-radius:9px;border:1px solid var(--traco);
+  background:var(--painel);color:var(--suave);cursor:pointer}
+
+/* atalhos: cartões largos, arte sangrando */
+.atalhos{display:grid;gap:14px;grid-template-columns:repeat(5,1fr)}
+@media(max-width:1200px){.atalhos{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.atalhos{grid-template-columns:repeat(2,1fr)}}
+.atalho{position:relative;height:150px;border-radius:16px;overflow:hidden;text-decoration:none;
+  border:1px solid var(--traco);display:block;background:var(--painel2)}
+:root[data-tema="cartoon"] .atalho{border-width:3px}
+.atalho .arte{position:absolute;inset:0}
+.atalho b{position:absolute;left:16px;bottom:14px;font:700 16px/1 "Inter","Fredoka",sans-serif;color:#fff;
+  text-shadow:0 2px 10px #000a;z-index:2}
+.atalho::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,#000b);z-index:1}
+.atalho:hover .arte{transform:scale(1.04)}
+.atalho .arte{transition:transform .3s}
+
+/* fileira de capas, rolando de lado */
+.fileira{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.fileira::-webkit-scrollbar{display:none}
+.fileira .capa-sis{flex:0 0 172px}
+
+/* ── acabamento ── */
+/* O rótulo do painel-sem-arte não deve aparecer por baixo do texto do
+   cartaz nem do atalho: ali o nome já está escrito por cima. */
+.vitrola .cartaz .arte.vazia::after,
+.atalho .arte.vazia::after{display:none}
+/* vizinhos: presentes, não apagados demais */
+.vitrola .cartaz{transform:scale(.9);opacity:.55}
+.vitrola .cartaz.meio{transform:scale(1);opacity:1}
+/* a caixa de peles some junto com as bolinhas no tema escuro */
+:root[data-tema="escuro"] .acoes-topo .ctrl{display:none}
+
+/* A estante, o criador e a ficha também ganham o trilho, mas mantêm a
+   coluna estreita: são telas de trabalho e a largura cheia atrapalha a
+   leitura. O trilho fica; a casca de painel, não. */
+/* ⚠ O SELETOR PRECISA DE body[data-casca] NA FRENTE.
+   Lá em cima tem `body[data-casca] .tela{margin:0}`, que vale (0,2,1).
+   `.tela.area-estreita` sozinho vale (0,2,0) — PERDE, por um ponto, e a
+   margem esquerda virava zero: era por isso que o trilho passava por cima
+   do criador, da estante e da ficha. Vir depois no arquivo não salva: a
+   especificidade é decidida antes da ordem. */
+body[data-casca] .tela.area-estreita{margin-left:62px;max-width:1260px;padding:0 26px 60px}
+@media(max-width:760px){body[data-casca] .tela.area-estreita{margin-left:0;padding:0 14px 76px}}
+.tela.area-estreita .cabeca{padding-top:20px}
+/* o rodapé fixo do criador não pode passar por baixo do trilho */
+.rodape-c .dentro{padding-left:86px}
+@media(max-width:760px){.rodape-c{bottom:56px}.rodape-c .dentro{padding-left:16px}}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ARTE — o que o Kainã pediu: imagem por trás de quase tudo, bem apagada,
+   com o personagem recortado por cima do painel.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* papel de parede: uma imagem só, quase invisível, presa na tela */
+.papel-parede{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-position:center;background-size:cover;background-repeat:no-repeat;
+  opacity:.055;filter:saturate(.7)}
+:root[data-tema="escuro"] .papel-parede{opacity:.085}
+.area,.tela{position:relative;z-index:1}
+
+/* ── atalhos com personagem ──
+   fundo = cena bem transparente · frente = personagem recortado */
+.atalho{background:var(--painel2)}
+.atalho .cena{position:absolute;inset:0;background-position:center;background-size:cover;
+  opacity:.28;transition:transform .35s,opacity .35s;filter:saturate(.85)}
+:root[data-tema="escuro"] .atalho .cena{opacity:.22}
+.atalho .figura{position:absolute;right:-6px;bottom:0;height:128%;z-index:2;
+  object-fit:contain;object-position:bottom right;
+  filter:drop-shadow(0 6px 14px rgba(0,0,0,.45));transition:transform .35s}
+.atalho:hover .cena{transform:scale(1.07);opacity:.42}
+.atalho:hover .figura{transform:translateY(-4px) scale(1.03)}
+.atalho b{z-index:3;max-width:62%}
+.atalho::after{background:linear-gradient(100deg,var(--painel2) 8%,color-mix(in srgb,var(--painel2) 55%,transparent) 48%,transparent 78%),
+  linear-gradient(transparent 46%,#000a)}
+@media(max-width:700px){.atalho .figura{height:112%;opacity:.9}}
+
+/* ── escolha de sistema (Sistemas e Compêndio sem ?s=) ── */
+.escolher{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));margin-top:6px}
+.cartao-sis{position:relative;display:block;text-decoration:none;color:inherit;overflow:hidden;
+  border-radius:18px;border:1px solid var(--traco);background:var(--painel2);min-height:230px}
+:root[data-tema="cartoon"] .cartao-sis{border-width:3px;border-radius:22px;box-shadow:0 5px 0 var(--traco)}
+:root[data-tema="cartoon"] .cartao-sis:hover{transform:translateY(-3px);box-shadow:0 8px 0 var(--traco)}
+.cartao-sis .arte{position:absolute;inset:0}
+.cartao-sis .arte img{width:100%;height:100%;object-fit:cover}
+.cartao-sis .sombra{position:absolute;inset:0;background:linear-gradient(transparent 26%,#000b 72%,#000e)}
+.cartao-sis .txt{position:absolute;inset:auto 0 0 0;padding:16px 18px;z-index:2}
+.cartao-sis .txt b{display:block;font:700 19px/1.15 "Inter","Fredoka",sans-serif;color:#fff}
+.cartao-sis .txt i{display:block;font-style:normal;font-size:12.5px;color:#cfc8dd;margin-top:4px}
+.cartao-sis .marca{position:absolute;top:12px;left:12px;z-index:2;font:700 10.5px/1 "Inter",sans-serif;
+  letter-spacing:.08em;text-transform:uppercase;color:#fff;background:#0009;backdrop-filter:blur(6px);
+  border-radius:99px;padding:6px 10px}
+
+/* ═══ a estante no feitio de painel (tabs + filtros + cartão de criar) ═══ */
+.hub-cabeca{display:flex;align-items:flex-start;gap:14px;margin:6px 0 20px}
+.hub-cabeca .voltar{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex:none;
+  background:var(--painel);border:1px solid var(--traco);color:var(--suave);text-decoration:none;font-size:18px}
+:root[data-tema="cartoon"] .hub-cabeca .voltar{border-width:3px;box-shadow:0 4px 0 var(--traco)}
+.hub-cabeca h2{margin:0;font:700 27px/1.1 "Inter","Fredoka",sans-serif;color:var(--branco)}
+.hub-cabeca p{margin:4px 0 0;color:var(--suave);font-size:13.5px;font-weight:600}
+
+.abas-gordas{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+@media(max-width:700px){.abas-gordas{grid-template-columns:1fr}}
+.abas-gordas button{display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;
+  padding:15px 10px;border-radius:14px;border:1px solid var(--traco);background:var(--painel);
+  font:700 14.5px/1 "Inter","Nunito",sans-serif;color:var(--suave)}
+:root[data-tema="cartoon"] .abas-gordas button{border-width:3px;border-radius:999px;box-shadow:0 4px 0 var(--traco)}
+.abas-gordas button svg{width:17px;height:17px;fill:currentColor}
+.abas-gordas button[aria-selected="true"]{background:var(--lilas);color:#fff;border-color:var(--lilas)}
+:root[data-tema="cartoon"] .abas-gordas button[aria-selected="true"]{color:var(--traco);border-color:var(--traco)}
+
+.filtros{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.filtros .campo{position:relative;flex:1 1 260px}
+.filtros .campo > svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;fill:var(--fraco)}
+.filtros input,.filtros select{width:100%;font:600 13.5px/1.4 "Nunito","Inter",sans-serif;color:var(--branco);
+  background:var(--painel);border:1px solid var(--traco);border-radius:13px;padding:13px 14px}
+:root[data-tema="cartoon"] .filtros input,:root[data-tema="cartoon"] .filtros select{border-width:3px;border-radius:999px}
+.filtros input{padding-left:40px}
+.filtros select{flex:0 0 190px;cursor:pointer;appearance:none;padding-right:34px;
+  background-image:linear-gradient(45deg,transparent 50%,var(--fraco) 50%),linear-gradient(135deg,var(--fraco) 50%,transparent 50%);
+  background-position:calc(100% - 19px) 50%,calc(100% - 13px) 50%;background-size:6px 6px;background-repeat:no-repeat}
+.filtros .caixa-sel{flex:0 0 200px}
+.filtros .conta-n{flex:none;display:flex;align-items:center;gap:7px;padding:0 17px;border-radius:999px;
+  border:1px solid var(--traco);background:var(--painel);color:var(--suave);font:700 13px/1 "Inter",sans-serif}
+:root[data-tema="cartoon"] .filtros .conta-n{border-width:3px}
+
+/* o cartão grande de criar, igual ao "+ Criar Nova Aventura" */
+.novo-grande{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  min-height:264px;border-radius:18px;cursor:pointer;text-decoration:none;
+  border:2px dashed var(--traco);background:var(--painel);color:var(--suave);padding:22px;text-align:center}
+:root[data-tema="cartoon"] .novo-grande{border-width:3px;border-radius:22px}
+.novo-grande .mais{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;
+  background:var(--painel3);border:1px solid var(--traco);font-size:30px;line-height:1;color:var(--suave)}
+:root[data-tema="cartoon"] .novo-grande .mais{border-width:3px}
+.novo-grande b{font:700 16px/1.2 "Inter","Fredoka",sans-serif;color:var(--branco)}
+.novo-grande small{font-size:12.5px;color:var(--fraco);max-width:30ch}
+.novo-grande:hover{border-color:var(--lilas);color:var(--branco)}
+.novo-grande:hover .mais{background:var(--lilas);color:#fff;border-color:var(--lilas)}
+
+/* o vazio da estante com personagem, em vez de caixa seca */
+.estante-vazia{position:relative;overflow:hidden}
+.estante-vazia .figura{position:absolute;right:14px;bottom:0;height:116%;opacity:.5;pointer-events:none;
+  filter:drop-shadow(0 6px 16px rgba(0,0,0,.4))}
+@media(max-width:860px){.estante-vazia .figura{display:none}}
+
+/* A caixa de peles tem 7 bolinhas e, somada à busca, estourava 390px —
+   era ela que fazia o painel rolar de lado no celular. No estreito ela
+   some: a troca de pele continua no tema e nas outras telas. */
+@media(max-width:760px){
+  .acoes-topo .ctrl{display:none}
+  .acoes-topo{margin-left:auto}
+}
+
+/* Estante vazia: um cartão só, com o personagem dentro — em vez de um
+   cartão de criar e uma caixa de "está vazia" dizendo a mesma coisa. */
+.novo-grande.sozinho{grid-column:1/-1;position:relative;overflow:hidden;min-height:300px}
+.novo-grande.sozinho .figura{position:absolute;right:18px;bottom:0;height:106%;opacity:.5;
+  pointer-events:none;filter:drop-shadow(0 8px 20px rgba(0,0,0,.45))}
+@media(max-width:860px){.novo-grande.sozinho .figura{display:none}}
+
+/* O personagem do atalho não pode ser cortado em cima: contain + altura
+   que cabe. Antes estava em 128% e a cabeça sumia. */
+.atalho .figura{height:104%;right:2px}
+@media(max-width:700px){.atalho .figura{height:96%}}

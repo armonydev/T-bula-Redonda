@@ -1,0 +1,50 @@
+═══ img/ — onde a arte do Tábula Redonda mora ═══
+
+REGRA ÚNICA: todo caminho aqui precisa estar listado em js/config.js, na
+lista "imagens". O site só pede o que está nessa lista — é assim que ele
+nunca mostra ícone de imagem quebrada nem enche o console de 404. Largou
+arquivo novo? Acrescente o caminho no config e ele aparece.
+
+────────────────────────── O QUE JÁ ESTÁ AQUI ──────────────────────────
+
+sistemas/ressonancia-capa.jpg    600×840   capa do PDF 26.1 (página 1)
+sistemas/ressonancia-banner.jpg 1600×600   cena de ritual (provisória)
+sistemas/ressonancia-manual.jpg  600×840   PROVISÓRIA: a capa escurecida
+sistemas/saa-capa.jpg            600×840   capa do PDF do Saa (página 1)
+sistemas/saa-banner.jpg         1600×600   a arte "Saa · Edição 26.1"
+sistemas/fm-capa.jpg             600×840   PROVISÓRIA: recorte da arte
+sistemas/fm-banner.jpg          1600×600   a arte do Jujutsu, já girada 270°
+
+anuncios/26-1.jpg               1200×520   "Ressonância Versão 1 — Teste"
+anuncios/bestiario.jpg          1200×520   "Ressonância Bestiário"
+anuncios/jujutsu.jpg            1200×520   a arte do Jujutsu
+anuncios/compendio.jpg          1200×520   PROVISÓRIA: cena genérica
+anuncios/ficha.jpg              1200×520   PROVISÓRIA: cena genérica
+
+atalhos/*.jpg                    640×400   fundo dos cartões de atalho.
+                                           Entram em 28% de opacidade: são
+                                           textura, não quadro.
+fundo/painel.jpg                1920×1080  papel de parede, em 5%.
+personagens/*.png                 alt.760  recortes com fundo transparente.
+                                           Ficam POR CIMA do painel, no
+                                           atalho e no banner do sistema.
+
+────────────────────── O QUE FALTA VOCÊ MANDAR ─────────────────────────
+
+1. sistemas/ressonancia-banner.jpg — o banner do seu próprio sistema.
+   Hoje é uma cena genérica. 1600×600, panorâmico.
+2. sistemas/ressonancia-manual.jpg — capa do Manual do Mestre. 600×840.
+3. sistemas/fm-capa.jpg — a capa de verdade do livro do F&M. 600×840.
+   (dá pra tirar da página 1 do PDF, como fiz com os outros dois)
+4. sistemas/fm-enciclopedia.jpg — capa da Enciclopédia Amaldiçoada.
+   (hoje ela está repetindo o banner). 600×840.
+5. anuncios/compendio.jpg e anuncios/ficha.jpg — dois cartazes seus,
+   do tamanho dos que você já mandou. 1200×520.
+6. personagens/ — um recorte por SISTEMA, pra aparecer no banner dele.
+   Hoje o Ressonância usa o dos olhos dourados, o Saa usa o cogumelo e
+   o F&M usa o do koi. PNG com fundo transparente, pessoa inteira.
+7. Uma marca do Tábula Redonda — hoje o quadradinho do trilho é um raio
+   desenhado em SVG. SVG ou PNG quadrado, fundo transparente.
+
+Tamanhos que funcionam bem:
+  banner  1600×600   capa 600×840   anúncio 1200×520   atalho 640×400

@@ -1,0 +1,56 @@
+/* ═══ tema.css — tokens, peles, estados e corrupção ═══
+   Peles e estados são coisas DIFERENTES:
+   · pele  = escolha do usuário, muda a paleta
+   · estado = reação da interface, só filtra por cima
+   Por isso qualquer estado funciona em qualquer pele sem combinação manual. */
+
+@property --sc  { syntax:"<number>"; inherits:false; initial-value:1 }
+@property --rx  { syntax:"<angle>";  inherits:false; initial-value:0deg }
+@property --ry  { syntax:"<angle>";  inherits:false; initial-value:0deg }
+@property --lift{ syntax:"<length>"; inherits:false; initial-value:0px }
+
+:root{
+  --chao:#5546b5; --chao2:#6b52c9; --chao3:#8a4fb0;
+  --painel:#262150; --painel2:#322b66; --painel3:#3d3578;
+  --traco:#15112f; --branco:#fff; --suave:#cfc6f2; --fraco:#aea2dc;
+  --vida:#ff5a7a; --carga:#56d6ea; --ouro:#ffc857; --menta:#7ddc96;
+  --laranja:#ff9057; --lilas:#bb8cff;
+  --ui-alpha:1;
+}
+:root[data-pele="pessego"]{--chao:#c2544f;--chao2:#d9754f;--chao3:#b8486e;--painel:#3d1f2e;--painel2:#50293a;--painel3:#633347;--traco:#1e0d16;--suave:#f6d2cd;--fraco:#dcb3b2;--lilas:#ff9f7a;--carga:#ffd166}
+:root[data-pele="mar"]{--chao:#2f7fb8;--chao2:#2fa5b8;--chao3:#3f62b5;--painel:#16304d;--painel2:#1d3f63;--painel3:#254e7a;--traco:#08182b;--suave:#c4e4f5;--fraco:#a2c2db;--lilas:#6fd2ff;--carga:#7ef0d0}
+:root[data-pele="bosque"]{--chao:#3f8a52;--chao2:#5aa85c;--chao3:#2f7a74;--painel:#16321f;--painel2:#1e4229;--painel3:#275234;--traco:#07160c;--suave:#cfe9cf;--fraco:#a9c7ae;--lilas:#a7e07a;--carga:#7fe3c0}
+/* CRT — fósforo verde sobre vidro escuro */
+:root[data-pele="crt"]{--chao:#123122;--chao2:#1a4a30;--chao3:#0f3a3a;--painel:#0b1f14;--painel2:#102b1c;--painel3:#164026;--traco:#030d07;--suave:#aef0c0;--fraco:#6fae84;--lilas:#5ff58a;--carga:#9cff6a;--ouro:#d8ff5f;--menta:#5ff58a}
+/* VOID — quase sem cor */
+:root[data-pele="vazio"]{--chao:#2a2a33;--chao2:#36363f;--chao3:#232329;--painel:#1b1b21;--painel2:#24242c;--painel3:#2e2e37;--traco:#0b0b0e;--suave:#c9c9d2;--fraco:#8d8d99;--lilas:#9a9aa8;--carga:#b0b0bd;--ouro:#c7c7d0;--vida:#a88b93;--menta:#9aa89c;--laranja:#a8988b}
+/* CORROMPIDO — magenta doente */
+:root[data-pele="corrompido"]{--chao:#5a1047;--chao2:#7a1250;--chao3:#3d0a52;--painel:#2a0a26;--painel2:#3a0f33;--painel3:#4b1442;--traco:#120410;--suave:#f5c0e8;--fraco:#c184b2;--lilas:#ff5ad6;--carga:#00ffc8;--ouro:#ffe34a}
+
+/* ── estados: só filtram, nunca repintam ── */
+.ceu{transition:filter .9s ease}
+[data-estado="vazio"] .ceu{filter:saturate(.22) brightness(.58)}
+[data-estado="vazio"] #camera{filter:saturate(.55)}
+[data-estado="espetaculo"] .ceu{filter:saturate(1.4) brightness(1.14)}
+[data-estado="sobrecarga"] .ceu{filter:saturate(1.15) contrast(1.06)}
+[data-estado="eco"] .ceu{filter:brightness(1.07)}
+.vinheta{position:fixed;inset:0;z-index:50;pointer-events:none;opacity:0;transition:opacity .7s ease;
+  box-shadow:inset 0 0 180px 40px var(--vida)}
+[data-estado="sobrecarga"] .vinheta{opacity:.26}
+[data-estado="corrompido"] .vinheta{opacity:.14;box-shadow:inset 0 0 200px 60px var(--lilas)}
+/* sobrecarga: os indicadores respiram */
+@keyframes respirar{0%,100%{opacity:1}50%{opacity:.72}}
+[data-estado="sobrecarga"] .cano .liq{animation:respirar 1.6s ease-in-out infinite}
+
+/* ── corrupção 0→6: cada nível acrescenta uma estranheza ── */
+[data-corrupcao="1"] .der:nth-child(3){transform:translateX(1px)}
+[data-corrupcao="2"] .per:nth-child(4) .t b{transform:translateX(5px);display:inline-block}
+[data-corrupcao="3"] .atr:nth-child(2) svg{filter:drop-shadow(3px 0 var(--carga))}
+[data-corrupcao="3"] .der:nth-child(5){transform:translate(-2px,2px) rotate(-.6deg)}
+[data-corrupcao="4"] .quem h2{letter-spacing:.06em;text-shadow:3px 0 var(--carga),-3px 0 var(--vida),0 4px 0 var(--traco)}
+[data-corrupcao="4"] .cartao{border-color:var(--lilas)}
+[data-corrupcao="5"] #camera{filter:hue-rotate(14deg) saturate(1.2)}
+[data-corrupcao="5"] .atr{border-radius:20px 4px 20px 4px}
+[data-corrupcao="6"] #camera{filter:hue-rotate(40deg) saturate(1.5) contrast(1.1)}
+[data-corrupcao="6"] .cartao{transform:rotate(-.4deg)}
+[data-corrupcao]{transition:filter .4s ease}

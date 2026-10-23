@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="pt" data-temavel data-tema="cartoon" data-pele="eco" data-estado="normal" data-corrupcao="0">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ficha — Tábula Redonda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;600;700&family=Nunito:ital,wght@0,500;0,600;0,700;1,600&display=swap">
+<link rel="stylesheet" href="css/tema.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/criador.css">
+<link rel="stylesheet" href="css/paginas.css">
+<link rel="stylesheet" href="css/casca.css">
+<link rel="stylesheet" href="css/escuro.css">
+<link rel="stylesheet" href="css/eventos.css">
+<link rel="stylesheet" href="css/cenario.css">
+<script src="js/config.js"></script>
+<script src="js/tema.js"></script>
+</head>
+<body data-casca="painel">
+
+<!-- camadas de fundo -->
+<div class="ceu"></div>
+<svg style="display:none" aria-hidden="true"><defs>
+<g id="i-casa"><path d="M12 3 2 11h3v9h6v-6h2v6h6v-9h3L12 3Z"/></g>
+<g id="i-livro"><path d="M5 3h11a3 3 0 0 1 3 3v15H8a3 3 0 0 1-3-3V3Zm3 2v12h9V6a1 1 0 0 0-1-1H8Z"/></g>
+<g id="i-ficha"><path d="M6 2h9l5 5v15H6V2Zm8 1.5V8h4.5L14 3.5ZM8 11h8v2H8v-2Zm0 4h8v2H8v-2Z"/></g>
+<g id="i-estante"><path d="M3 4h4v16H3V4Zm6 0h4v16H9V4Zm6 1.2 3.5-.9 3.5 14.4-3.5.9L15 5.2Z"/></g>
+</defs></svg>
+<div id="fundo-segredos" aria-hidden="true"></div>
+<canvas class="po" id="po" aria-hidden="true"></canvas>
+<div class="luzmouse" aria-hidden="true"></div>
+<div class="vinheta" aria-hidden="true"></div>
+
+<!-- ícones -->
+<svg style="display:none" aria-hidden="true"><defs>
+<g id="i-forca"><path d="M4 9h3l2-4h3l-1 4h5a2 2 0 0 1 2 2.4l-1.2 6A2 2 0 0 1 14.8 19H7a3 3 0 0 1-3-3V9Z"/></g>
+<g id="i-destreza"><path d="M20 3 8 9l3 2-5 6 1 1 6-5 2 3 6-12Z"/></g>
+<g id="i-constituicao"><path d="M12 2 4 5v7c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V5l-8-3Zm3 9h-2v2h-2v-2H9V9h2V7h2v2h2v2Z"/></g>
+<g id="i-inteligencia"><path d="M12 3a6 6 0 0 0-6 6c0 2.3 1.2 3.7 2.2 5 .6.8.8 1.3.8 2v1h6v-1c0-.7.2-1.2.8-2 1-1.3 2.2-2.7 2.2-5a6 6 0 0 0-6-6Zm-3 15h6v1.5a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 19.5V18Z"/></g>
+<g id="i-carga"><path d="M13 2 4 13h6l-1 9 9-11h-6l1-9Z"/></g>
+<g id="i-carisma"><path d="M12 2.5 14.9 8l6.1.9-4.4 4.3 1 6.1-5.6-2.9-5.6 2.9 1-6.1L3 8.9 9.1 8 12 2.5Z"/></g>
+<g id="i-vida"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21Z"/></g>
+<g id="i-escudo"><path d="M12 2 4 5.2v6.3c0 5 3.3 8.9 8 10.5 4.7-1.6 8-5.5 8-10.5V5.2L12 2Z"/></g>
+<g id="i-peso"><path d="M8.5 7a3.5 3.5 0 1 1 7 0h2.1l2.4 13H4L6.4 7h2.1Zm2 0h3a1.5 1.5 0 0 0-3 0Z"/></g>
+<g id="i-alcance"><path d="M2 12h7l-2.5-3h3L14 12l-4.5 3h-3L9 12H2Zm13-6h7v12h-7V6Z"/></g>
+<g id="i-limite"><path d="M12 3a9 9 0 0 0-9 9h3a6 6 0 0 1 12 0h3a9 9 0 0 0-9-9Zm1 9.3V8h-2v4.3A2 2 0 1 0 13 12.3Z"/></g>
+<g id="i-busca"><path d="M10.5 3a7.5 7.5 0 1 1-4.6 13.4l-3.2 3.2-1.4-1.4 3.2-3.2A7.5 7.5 0 0 1 10.5 3Zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Z"/></g>
+<g id="i-saco"><path d="M7 7V6a5 5 0 0 1 10 0v1h2.2L21 21H3L4.8 7H7Zm2 0h6V6a3 3 0 0 0-6 0v1Z"/></g>
+<g id="i-raio"><path d="M11 2 5 13h5l-1 9 7-12h-5l2-8H11Z"/></g>
+<g id="i-classe"><path d="M12 2 3 7v6c0 5 3.9 8.9 9 10 5.1-1.1 9-5 9-10V7l-9-5Z"/></g>
+<g id="i-livro"><path d="M4 4h7a3 3 0 0 1 3 3v13a3 3 0 0 0-3-3H4V4Zm16 0h-7a3 3 0 0 0-3 3v13a3 3 0 0 1 3-3h7V4Z"/></g>
+<g id="i-term"><path d="M3 4h18v16H3V4Zm3.6 4.1 3.3 3.4-3.3 3.4 1.4 1.4 4.7-4.8-4.7-4.8-1.4 1.4ZM13 15h5v2h-5v-2Z"/></g>
+</defs></svg>
+
+<!-- TUDO que pode tremer vive dentro da câmera -->
+<div id="camera">
+<nav class="trilho-lat" aria-label="Navegação">
+    <a class="marca-mini" href="index.html" aria-label="Tábula Redonda"><svg viewBox="0 0 24 24"><use href="#i-carga"/></svg></a>
+    <a href="index.html" data-dica="Início" data-nav="inicio"><svg viewBox="0 0 24 24"><use href="#i-casa"/></svg></a>
+    <a href="sistema.html" data-dica="Sistemas" data-nav="sistema"><svg viewBox="0 0 24 24"><use href="#i-classe"/></svg></a>
+    <a href="fichas.html" data-dica="Fichas e personagens" data-nav="fichas"><svg viewBox="0 0 24 24"><use href="#i-ficha"/></svg></a>
+    <span class="risca-v"></span>
+    <a href="loja.html" data-dica="Loja" data-nav="loja"><svg viewBox="0 0 24 24"><use href="#i-saco"/></svg></a>
+  </nav>
+
+<div class="tela area-estreita">
+
+  <div class="cabeca">
+    <div class="logo" id="logo">
+      <div class="bolha"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#15112f" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h3l2.5-6 3 12 2.5-6h5"/></svg></div>
+      <div><h1>Tábula Redonda</h1><small>ficha · Ressonância</small></div>
+    </div>
+    <div class="ctrl">
+      <button style="--g:#bb8cff" data-pele="eco"        aria-pressed="true"  aria-label="Tema Eco"></button>
+      <button style="--g:#ff9f7a" data-pele="pessego"    aria-pressed="false" aria-label="Tema Pêssego"></button>
+      <button style="--g:#6fd2ff" data-pele="mar"        aria-pressed="false" aria-label="Tema Mar"></button>
+      <button style="--g:#a7e07a" data-pele="bosque"     aria-pressed="false" aria-label="Tema Bosque"></button>
+      <button style="--g:#5ff58a" data-pele="crt"        aria-pressed="false" aria-label="Tema CRT"></button>
+      <button style="--g:#9a9aa8" data-pele="vazio"      aria-pressed="false" aria-label="Tema Vazio"></button>
+      <button style="--g:#ff5ad6" data-pele="corrompido" aria-pressed="false" aria-label="Tema Corrompido"></button>
+      <span class="risca"></span>
+    <span id="troca-tema"></span>
+    <a class="som" href="fichas.html" style="text-decoration:none;display:inline-flex;align-items:center">minhas fichas</a>
+      <button class="som" id="som" aria-pressed="false">som</button>
+    </div>
+  </div>
+
+  <div class="cartao" data-tilt>
+    <div class="heroi">
+      <div class="retrato" id="retrato">
+        <svg class="forma" viewBox="0 0 24 24" fill="none" stroke="#bb8cff" stroke-width="1.7" stroke-linecap="round">
+          <path d="M2 12h2.4l2-5.5L9.6 18l2.4-9 2.2 6.4L16.4 12H22"/>
+        </svg>
+        <!-- solte assets/characters/theodor.png e ele aparece aqui sozinho -->
+        <img class="arte" alt="">
+        <div class="nivel" id="nivel" title="subir de nível">2</div>
+      </div>
+      <div class="quem">
+        <h2 id="rs-nome">Theodor</h2>
+        <div class="epi" id="rs-epi">o palhaço sem rosto · francês · 28 anos</div>
+        <div class="selos">
+          <span class="selo-p"><svg viewBox="0 0 24 24"><use href="#i-classe"/></svg><span id="rs-classe">Ressonante</span> <i>classe</i></span>
+          <span class="selo-p"><svg viewBox="0 0 24 24"><use href="#i-carisma"/></svg><span id="rs-origem">Devoto</span> <i>origem</i></span>
+          <span class="selo-p"><svg viewBox="0 0 24 24"><use href="#i-saco"/></svg>60 <i>marcos</i></span>
+        </div>
+        <div class="barras">
+          <div class="barra">
+            <svg viewBox="0 0 24 24" style="fill:var(--vida)"><use href="#i-vida"/></svg>
+            <div class="cano"><div class="liq" id="b-vida" style="--c:var(--vida);width:100%"></div><div class="onda" id="o-vida"></div></div>
+            <div class="num"><span id="n-vida">26</span> <i id="m-vida">/ 26</i></div>
+          </div>
+          <div class="barra">
+            <svg viewBox="0 0 24 24" style="fill:var(--carga)"><use href="#i-raio"/></svg>
+            <div class="cano"><div class="liq" id="b-res" style="--c:var(--carga);width:100%"></div><div class="onda" id="o-res"></div></div>
+            <div class="num"><span id="n-res">22</span> <i id="m-res">/ 22</i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="atributos" id="attrs"></div>
+
+  <div class="colunas">
+    <div class="pilha">
+      <div class="cartao" data-tilt>
+        <div class="guias" role="tablist" aria-label="Painel principal">
+          <button class="guia" role="tab" aria-selected="true"  data-folha="f-der" style="--c:var(--menta)"><svg viewBox="0 0 24 24"><use href="#i-limite"/></svg>Derivados</button>
+          <button class="guia" role="tab" aria-selected="false" data-folha="f-per" style="--c:var(--carga)"><svg viewBox="0 0 24 24"><use href="#i-busca"/></svg>Perícias</button>
+          <button class="guia" role="tab" aria-selected="false" data-folha="f-his" style="--c:var(--ouro)"><svg viewBox="0 0 24 24"><use href="#i-livro"/></svg>História</button>
+          <button class="guia" role="tab" aria-selected="false" data-folha="f-term" style="--c:var(--lilas)"><svg viewBox="0 0 24 24"><use href="#i-term"/></svg>Terminal</button>
+        </div>
+        <div class="folha" id="f-der" role="tabpanel">
+          <div class="derivados">
+            <div class="der"><div class="l"><svg viewBox="0 0 24 24"><use href="#i-vida"/></svg>Vida máxima</div><div class="v" id="x-vida">26</div><div class="f">10 + CON × 4</div></div>
+            <div class="der"><div class="l"><svg viewBox="0 0 24 24"><use href="#i-raio"/></svg>Reserva</div><div class="v" id="x-res">22</div><div class="f">(INT + Carga) × 2</div></div>
+            <div class="der"><div class="l"><svg viewBox="0 0 24 24"><use href="#i-limite"/></svg>Limite / ação</div><div class="v" id="x-lim">4</div><div class="f">= atributo Carga</div></div>
+            <div class="der"><div class="l"><svg viewBox="0 0 24 24"><use href="#i-escudo"/></svg>Defesa</div><div class="v" id="x-def">14</div><div class="f">10 + CON</div></div>
+            <div class="der"><div class="l"><svg viewBox="0 0 24 24"><use href="#i-peso"/></svg>Peso máximo</div><div class="v" id="x-peso">14</div><div class="f">Força × 2</div></div>
+            <div class="der"><div class="l"><svg viewBox="0 0 24 24"><use href="#i-alcance"/></svg>Alcance</div><div class="v" id="x-alc">5m</div><div class="f">+5m por Carga</div></div>
+          </div>
+        </div>
+        <div class="folha" id="f-per" role="tabpanel" hidden><div class="pericias" id="pers"></div></div>
+        <div class="folha" id="f-his" role="tabpanel" hidden>
+          <div class="lista" id="rs-historia">
+            <div class="item"><b>Antes do beco</b><span>Chegou de França com uma carta que não lembra de ter recebido. O rosto já não estava lá.</span></div>
+            <div class="item"><b>Razão e Emoção</b><span>As duas metades discordam. Uma conta os passos, a outra quer correr.</span></div>
+            <div class="item"><b>Os três dispositivos</b><span>Vieram juntos. Ninguém explicou de onde, e ele nunca usou nenhum.</span></div>
+          </div>
+        </div>
+        <div class="folha" id="f-term" role="tabpanel" hidden>
+          <div class="terminal">
+            <div class="saida" id="term-saida"></div>
+            <div class="prompt"><span>&gt;</span><input id="term-entrada" placeholder="digite e aperte enter" autocomplete="off" spellcheck="false"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pilha">
+      <div class="cartao" data-tilt>
+        <div class="guias" role="tablist" aria-label="Painel lateral">
+          <button class="guia" role="tab" aria-selected="true"  data-folha="f-eco"   style="--c:var(--lilas)"><svg viewBox="0 0 24 24"><use href="#i-carga"/></svg><span id="rs-aba-eco">Eco duplo</span></button>
+          <button class="guia" role="tab" aria-selected="false" data-folha="f-itens" style="--c:var(--laranja)"><svg viewBox="0 0 24 24"><use href="#i-saco"/></svg>Itens</button>
+        </div>
+        <div class="folha" id="f-eco" role="tabpanel">
+          <div class="conceito"><div class="bola"></div><div><b id="rs-conceito">Razão e Emoção</b><span id="rs-conceito-sub">conceito · duas metades</span></div></div>
+          <div class="lista" id="rs-aplicacoes">
+            <button class="item" aria-expanded="false" data-tilt><b>Dano Direto</b><span>Dano Base 4 + Carga investida − metade da Constituição do alvo.</span><span class="detalhe"><em>Porte pequeno. Alcance 5m + 5m por Carga além do custo base.</em></span></button>
+            <button class="item" aria-expanded="false" data-tilt><b>Controle / Debuff</b><span>Impõe uma Condição. Salvaguarda 1d20 + Carga contra a DC.</span><span class="detalhe"><em>DC 12 / 15 / 18 conforme a severidade: Leve, Moderada, Severa.</em></span></button>
+            <button class="item" aria-expanded="false" data-tilt><b>Detecção</b><span>Sente o Vetor de um Eco observado. Custa 1 Ação.</span><span class="detalhe"><em>Não revela intenção nem Aplicações — só o tipo.</em></span></button>
+          </div>
+        </div>
+        <div class="folha" id="f-itens" role="tabpanel" hidden>
+          <div class="lista">
+            <button class="item" aria-expanded="false" data-tilt><b>3 dispositivos de retorno</b><span>Peso 0 · uso único cada</span><span class="detalhe"><em>Ninguém da mesa sabe pra onde eles retornam.</em></span></button>
+            <button class="item" aria-expanded="false" data-tilt><b>Foco do Eco</b><span>Peso 0 · cosmético, sem efeito mecânico</span><span class="detalhe"><em>Garantido de graça pela Classe Ressonante.</em></span></button>
+            <button class="item" aria-expanded="false" data-tilt><b>Kit de primeiros socorros</b><span>Peso 1 · 10% da Vida, uso único</span><span class="detalhe"><em>Custa 10 Marcos pra repor.</em></span></button>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap">
+            <span style="font-size:12.5px;color:var(--fraco);font-weight:700">peso 1 de 14</span>
+            <button class="botao" id="descansar">Descanso longo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rodape">
+    <span>Protótipo local — regras do Ressonância 2.1.</span>
+    <span>Perícias e graus provisórios, trocar pelos oficiais.</span>
+  </div>
+</div>
+</div><!-- /camera -->
+
+<!-- diálogo de rolagem -->
+<div class="veu" id="veu" role="dialog" aria-modal="true" aria-labelledby="dlg-t">
+  <div class="dlg">
+    <div class="tipo" id="dlg-tipo">teste de perícia</div>
+    <h3 id="dlg-t">Luta</h3>
+    <div class="pool"><div class="n" id="dlg-g">0</div><div class="r">carga nesta ação<br>limite <b id="dlg-l">4</b></div></div>
+    <input type="range" id="dlg-r" min="0" max="4" value="0" step="1" aria-label="Carga gasta nesta ação">
+    <div class="fatias">
+      <div><span>no acerto</span><b id="dlg-ac">0</b></div>
+      <div><span>guardado no dano</span><b id="dlg-dn">0</b></div>
+    </div>
+    <input type="range" id="dlg-s" min="0" max="0" value="0" step="1" aria-label="Divisão entre Acerto e Dano" style="margin-top:8px">
+    <div class="linha-dc">
+      <label for="dlg-dc">Dificuldade</label>
+      <select id="dlg-dc"></select>
+    </div>
+    <p class="dica">O que vai pro Acerto não vai pro Dano. É a decisão que o sistema inteiro gira em torno.</p>
+    <div class="acoes"><button class="botao calmo" id="dlg-x">Cancelar</button><button class="botao" id="dlg-ok">Rolar</button></div>
+  </div>
+</div>
+
+<!-- resultado -->
+<div class="result" id="result" role="status" aria-live="polite">
+  <div class="cab"><div><b id="r-q">Luta</b><span id="r-d">1d20 + força</span></div><button class="x" id="r-x" aria-label="Fechar">✕</button></div>
+  <div class="lance" id="lance">
+    <div class="pedra" id="r-face">—</div>
+    <div class="soma"><div class="t" id="r-tot">—</div><div class="c" id="r-cont"></div></div>
+  </div>
+  <div class="fita ok" id="r-fita">—</div>
+</div>
+
+<!-- camada secreta -->
+<div id="luz-evento" aria-hidden="true"></div>
+<div class="tv" id="tv" aria-hidden="true"></div>
+<div id="palco-segredos" aria-hidden="false"></div>
+<div id="cortinas" aria-hidden="true"><div class="pano esq"></div><div class="pano dir"></div></div>
+<div id="cartaz" aria-hidden="true"><div class="caixa">
+  <div class="rot">ressonância</div><div class="n" id="palco-n">3</div><div class="sub">nível alcançado</div>
+</div></div>
+<div class="sussurro" id="sussurro" aria-hidden="true"></div>
+
+<!-- ordem importa -->
+<script src="js/regras.js"></script>
+<script src="js/armazenar.js"></script>
+<script src="js/retrato.js"></script>
+<script src="js/nucleo.js"></script>
+<script src="js/particulas.js"></script>
+<script src="js/falha.js"></script>
+<script src="js/toque.js"></script>
+<script src="js/segredos.js"></script>
+<script src="js/cenario.js"></script>
+<script src="js/eventos.config.js"></script>
+<script src="js/cenarios.config.js"></script>
+<script src="js/terminal.js"></script>
+<script src="js/ficha.js"></script>
+<script src="js/app.js"></script>
+<script src="js/nav.js"></script>
+</body>
+</html>

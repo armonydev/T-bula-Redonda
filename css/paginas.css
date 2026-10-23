@@ -1,0 +1,239 @@
+/* ═══ paginas.css — catálogo, página de sistema e compêndio ═══
+   Escrito em cima dos tokens, então vale nos dois temas. O que muda entre
+   eles (borda grossa × borda fina, sombra dura × sombra suave) já vem de
+   layout.css e escuro.css. */
+
+/* ── lugar da imagem que ainda não existe ──
+   Em vez de <img> quebrada, um painel com a cor do sistema e o nome dele.
+   É o que permite montar o site inteiro antes das artes chegarem. */
+.arte{position:relative;overflow:hidden;background:var(--painel2);display:block}
+.arte img{width:100%;height:100%;object-fit:cover;display:block}
+.arte.vazia{background:
+  radial-gradient(120% 90% at 20% 0%, color-mix(in srgb, var(--c,#8a7ff0) 42%, transparent), transparent 70%),
+  linear-gradient(160deg, var(--painel3), var(--painel));}
+.arte.vazia::after{content:attr(data-rotulo);position:absolute;inset:auto 0 0 0;padding:10px 14px;
+  font:700 11px/1.3 "Inter","Nunito",sans-serif;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--fraco);opacity:.75}
+
+/* ── carrossel ── */
+.palco-anuncio{position:relative;margin:18px 0 30px}
+.anuncios{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:4px}
+.anuncios::-webkit-scrollbar{display:none}
+.anuncio{flex:0 0 min(860px,92%);scroll-snap-align:center;position:relative;height:330px;border-radius:var(--raio-g,20px);
+  overflow:hidden;text-decoration:none;color:inherit;border:3px solid var(--traco)}
+:root[data-tema="escuro"] .anuncio{border-width:1px}
+@media(max-width:700px){.anuncio{height:230px;flex-basis:94%}}
+.anuncio .arte{position:absolute;inset:0}
+.anuncio .texto{position:absolute;inset:auto 0 0 0;padding:26px 28px;
+  background:linear-gradient(transparent, #000a 45%, #000d)}
+.anuncio .texto .risquinho{display:block;width:34px;height:3px;background:var(--lilas);border-radius:99px;margin-bottom:11px}
+.anuncio .texto b{display:block;font-size:27px;font-weight:700;color:#fff;margin-bottom:5px}
+.anuncio .texto span{font-size:14px;color:#d9d4e4}
+.pontos{display:flex;gap:7px;justify-content:center;margin-top:14px}
+.pontos button{width:8px;height:8px;border-radius:99px;border:0;background:var(--traco);cursor:pointer;padding:0}
+.pontos button[aria-current="true"]{background:var(--lilas);width:22px}
+
+/* ── grade de sistemas ── */
+.secao-titulo{display:flex;align-items:baseline;gap:12px;margin:30px 0 14px}
+.secao-titulo h2{font-size:21px;margin:0;color:var(--branco)}
+.secao-titulo span{font-size:13px;color:var(--fraco);font-weight:600}
+.capas{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(176px,1fr))}
+.capa-sis{text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:9px}
+.capa-sis .arte{aspect-ratio:5/7;border-radius:var(--raio,14px);border:3px solid var(--traco);
+  transition:transform .2s cubic-bezier(.3,1.3,.5,1)}
+:root[data-tema="escuro"] .capa-sis .arte{border-width:1px}
+.capa-sis:hover .arte{transform:translateY(-5px)}
+.capa-sis b{font-size:15px;color:var(--branco);font-weight:700}
+.capa-sis i{font-style:normal;font-size:12px;color:var(--fraco);font-weight:600}
+.capa-sis .emBreve{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ouro);font-weight:700}
+
+/* ── página de sistema: o banner ── */
+.banner{position:relative;margin:0 -20px;min-height:430px;display:grid;place-items:center;isolation:isolate;overflow:hidden}
+/* o sangramento tem que casar com o padding do miolo, senão sobra 6px de
+   cada lado e a página rola de lado no celular */
+@media(max-width:760px){.banner{margin:0 -14px}}
+@media(max-width:700px){.banner{min-height:320px}}
+.banner .arte{position:absolute;inset:0;z-index:-2}
+.banner::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(transparent 30%, color-mix(in srgb,var(--chao) 80%, transparent) 72%, var(--chao))}
+.banner .dentro{text-align:center;padding:60px 20px 72px;max-width:760px}
+.banner .selo-sis{font:700 11px/1 "Inter","Nunito",sans-serif;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--fraco);display:block;margin-bottom:12px}
+.banner h1{font-size:clamp(34px,6vw,58px);margin:0 0 6px;color:#fff;line-height:1.05}
+.banner .sigla{display:inline-block;font:700 12px/1 "Inter","Nunito",sans-serif;letter-spacing:.26em;
+  color:var(--fraco);border-top:1px solid var(--traco);border-bottom:1px solid var(--traco);padding:8px 18px;margin:10px 0 16px}
+.banner p{margin:0;color:var(--suave);font-size:15.5px}
+.banner .quem{margin-top:10px;font-size:12.5px;color:var(--fraco);font-weight:600}
+
+/* barra de categorias flutuante */
+.abas-sis{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin:-30px auto 26px;position:relative;z-index:3;
+  background:var(--painel);border:3px solid var(--traco);border-radius:999px;padding:5px;width:max-content;max-width:100%}
+:root[data-tema="escuro"] .abas-sis{border-width:1px;box-shadow:var(--sombra)}
+.abas-sis button{border:0;background:none;cursor:pointer;border-radius:999px;padding:9px 18px;
+  font:700 13.5px/1 "Fredoka","Inter",sans-serif;color:var(--fraco);display:inline-flex;align-items:center;gap:7px}
+:root[data-tema="escuro"] .abas-sis button{font-family:"Inter","Nunito",sans-serif}
+.abas-sis button[aria-selected=true]{background:var(--lilas);color:#fff}
+:root[data-tema="cartoon"] .abas-sis button[aria-selected=true]{color:var(--traco)}
+
+/* biblioteca do sistema */
+.rotulo-bib{font:700 11px/1 "Inter","Nunito",sans-serif;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--lilas);margin:0 0 14px}
+.vazio-cx{border:3px dashed var(--traco);border-radius:var(--raio-g,18px);padding:40px 24px;text-align:center;
+  color:var(--suave);background:var(--painel)}
+:root[data-tema="escuro"] .vazio-cx{border-width:1px}
+.vazio-cx h3{margin:0 0 7px;color:var(--branco);font-size:19px}
+.vazio-cx p{margin:0 auto;max-width:48ch;font-size:14px;color:var(--fraco)}
+
+/* ── compêndio ── */
+.comp{display:grid;grid-template-columns:286px minmax(0,1fr);gap:24px;align-items:start;padding-bottom:70px}
+/* ⚠ tem que ser minmax(0,1fr), não 1fr.
+   Uma coluna "1fr" não encolhe abaixo do conteúdo mais largo dela, então
+   as categorias compridas do Jujutsu ("Testes de Resistência", "Níveis de
+   Aptidão") esticavam a página pra 692px num celular de 390. */
+@media(max-width:900px){.comp{grid-template-columns:minmax(0,1fr)}}
+.comp-lado{position:sticky;top:16px;display:grid;gap:16px;min-width:0}
+.comp > main{min-width:0}
+@media(max-width:900px){.comp-lado{position:static}}
+.comp-id{background:var(--painel);border:3px solid var(--traco);border-radius:var(--raio-g,18px);padding:16px}
+:root[data-tema="escuro"] .comp-id{border-width:1px;box-shadow:var(--sombra)}
+.comp-id .arte{aspect-ratio:5/7;border-radius:var(--raio,12px);margin-bottom:13px}
+.comp-id b{display:block;font-size:17px;color:var(--branco);font-weight:700;margin-bottom:5px}
+.comp-id p{margin:0 0 9px;font-size:12.5px;color:var(--fraco);line-height:1.5}
+.comp-id .quem{font-size:11.5px;color:var(--fraco);font-weight:700}
+.cats{display:grid;gap:3px;min-width:0}
+.cats button{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;
+  min-width:0;text-align:left;overflow-wrap:anywhere;
+  border:0;background:none;cursor:pointer;text-align:left;padding:10px 13px;border-radius:10px;
+  font:600 14px/1 "Nunito","Inter",sans-serif;color:var(--suave)}
+.cats button:hover{background:var(--painel2)}
+.cats button[aria-current=true]{background:var(--lilas);color:#fff;font-weight:700}
+:root[data-tema="cartoon"] .cats button[aria-current=true]{color:var(--traco)}
+.cats button em{font-style:normal;font-size:12px;opacity:.75;font-variant-numeric:tabular-nums}
+
+.busca{position:relative;margin-bottom:18px}
+.busca input{width:100%;font:600 15px/1.4 "Nunito","Inter",sans-serif;color:var(--branco);
+  background:var(--painel);border:3px solid var(--traco);border-radius:14px;padding:14px 44px 14px 46px}
+:root[data-tema="escuro"] .busca input{border-width:1px;background:var(--painel2)}
+.busca svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:19px;height:19px;fill:var(--fraco)}
+.busca .limpar{position:absolute;right:11px;top:50%;transform:translateY(-50%);border:0;background:var(--painel3);
+  color:var(--suave);border-radius:99px;width:26px;height:26px;cursor:pointer;font-size:15px;line-height:1}
+.comp-topo{display:flex;align-items:baseline;gap:11px;margin-bottom:14px}
+.comp-topo h2{margin:0;font-size:25px;color:var(--branco)}
+.comp-topo span{font-size:13px;color:var(--fraco);font-weight:600;margin-left:auto}
+
+.entradas{display:grid;min-width:0;gap:12px;grid-template-columns:1fr 1fr}
+@media(max-width:1100px){.entradas{grid-template-columns:1fr}}
+/* ⚠ min-width:0 e a fileira de etiquetas quebrando linha.
+   Um item de grid tem min-width:auto por padrão: ele NÃO encolhe abaixo do
+   conteúdo. A entrada "Classes de Dificuldade" tem seis etiquetas numa
+   fileira só e esticava a coluna pra 678px dentro de uma de 362. */
+.ent{min-width:0;overflow-wrap:anywhere;text-align:left;width:100%;cursor:pointer;background:var(--painel);border:3px solid var(--traco);
+  border-radius:var(--raio,14px);padding:14px 16px;color:inherit;font:inherit;display:grid;gap:7px;
+  transition:border-color .16s,transform .16s}
+:root[data-tema="escuro"] .ent{border-width:1px}
+/* ...e os filhos também: o .res usa -webkit-box pro corte em 2 linhas,
+   e uma caixa dessas não encolhe sozinha dentro de um grid. */
+.ent > *{min-width:0}
+/* etiqueta comprida quebra linha em vez de empurrar a página */
+.et{max-width:100%;overflow-wrap:anywhere}
+.ent:hover{transform:translateY(-2px);border-color:var(--lilas)}
+.ent .cat{font:700 10.5px/1 "Inter","Nunito",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--fraco)}
+.ent b{font-size:16.5px;color:var(--branco);font-weight:700}
+.ent .res{font-size:13px;color:var(--suave);line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ent .ets{display:flex;gap:6px;flex-wrap:wrap}
+.et{font:700 10.5px/1 "Inter","Nunito",sans-serif;padding:5px 9px;border-radius:7px;
+  background:var(--painel3);color:var(--suave);white-space:nowrap}
+.et i{font-style:normal;opacity:.6;margin-right:4px}
+
+/* detalhe */
+.veu-ent{position:fixed;inset:0;z-index:110;display:grid;place-items:center;padding:20px;
+  background:#05050ad9;backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .22s}
+.veu-ent.on{opacity:1;pointer-events:auto}
+.ent-det{max-width:640px;width:100%;max-height:84vh;overflow:auto;background:var(--painel);
+  border:3px solid var(--traco);border-radius:var(--raio-g,18px);padding:26px}
+:root[data-tema="escuro"] .ent-det{border-width:1px;box-shadow:0 30px 80px -30px #000}
+.ent-det .cat{font:700 11px/1 "Inter","Nunito",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--lilas)}
+.ent-det h3{margin:9px 0 13px;font-size:27px;color:var(--branco)}
+.ent-det .ets{margin-bottom:17px}
+.ent-det dl{display:grid;gap:13px;margin:0}
+.ent-det dt{font:700 11px/1 "Inter","Nunito",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--fraco)}
+.ent-det dd{margin:5px 0 0;font-size:14.5px;color:var(--suave);line-height:1.6}
+.ent-det .fechar{margin-top:20px}
+
+
+/* ── select: o nativo é feio, então vira pílula do tema ── */
+.sel-est{font:600 14px/1.4 "Nunito","Inter",sans-serif;color:var(--branco);background:var(--painel);
+  border:3px solid var(--traco);border-radius:12px;padding:10px 32px 10px 12px;width:100%;cursor:pointer;
+  appearance:none;-webkit-appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,var(--fraco) 50%),linear-gradient(135deg,var(--fraco) 50%,transparent 50%);
+  background-position:calc(100% - 17px) center,calc(100% - 12px) center;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+:root[data-tema="escuro"] .sel-est{border-width:1px;background-color:var(--painel2);border-radius:10px}
+.sel-est:focus{outline:2px solid var(--lilas);outline-offset:1px}
+
+/* ── loja ── */
+.destaque-loja{display:grid;grid-template-columns:1fr 320px;gap:34px;align-items:center;
+  padding:40px 0 50px;border-bottom:1px solid var(--traco);margin-bottom:30px}
+@media(max-width:880px){.destaque-loja{grid-template-columns:1fr;gap:22px}}
+.destaque-loja .selo{display:inline-block;font:700 11px/1 "Inter","Nunito",sans-serif;letter-spacing:.1em;
+  text-transform:uppercase;background:var(--lilas);color:#fff;padding:6px 12px;border-radius:999px;margin-bottom:16px}
+:root[data-tema="cartoon"] .destaque-loja .selo{color:var(--traco)}
+.destaque-loja h2{font-size:clamp(32px,5vw,52px);margin:0 0 10px;color:var(--branco);line-height:1.05}
+.destaque-loja .quem{font:700 12px/1 "Inter","Nunito",sans-serif;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--fraco);margin:0 0 16px}
+.destaque-loja .texto{font-size:15.5px;color:var(--suave);margin:0 0 22px;max-width:52ch}
+.destaque-loja .linha-preco{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.destaque-loja .preco{font:700 11px/1.6 "Inter","Nunito",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--fraco)}
+.destaque-loja .preco b{display:block;font-size:24px;color:var(--branco);letter-spacing:0}
+.destaque-loja .arte{aspect-ratio:5/7;border-radius:16px;border:3px solid var(--traco)}
+:root[data-tema="escuro"] .destaque-loja .arte{border-width:1px;box-shadow:var(--sombra)}
+
+.prateleira{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.prod{display:flex;flex-direction:column;gap:10px}
+.prod .arte{aspect-ratio:5/7;border-radius:14px;border:3px solid var(--traco)}
+:root[data-tema="escuro"] .prod .arte{border-width:1px}
+.prod b{font-size:15.5px;color:var(--branco);font-weight:700}
+.prod i{font-style:normal;font-size:12px;color:var(--fraco);font-weight:600}
+.prod .pe{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}
+.prod .pe span{font:700 12.5px/1 "Inter","Nunito",sans-serif;color:var(--fraco)}
+.tem-selo{font:700 10.5px/1 "Inter","Nunito",sans-serif;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--menta);display:inline-flex;align-items:center;gap:5px}
+
+/* O personagem do sistema, encostado no canto do banner.
+   O banner tem margin:0 -20px pra sangrar nas bordas, então ele PRECISA de
+   overflow:hidden — senão a figura empurrava a página de lado no celular. */
+.banner .figura-banner{position:absolute;right:1%;bottom:0;height:100%;z-index:2;object-fit:contain;
+  object-position:bottom right;pointer-events:none;opacity:.92;
+  filter:drop-shadow(0 10px 26px rgba(0,0,0,.6))}
+.banner .dentro{position:relative;z-index:3}
+/* Arte clara e cheia de texto (o cartaz do Jujutsu, por exemplo) comia o
+   título. Uma segunda sombra, atrás só do texto, resolve sem apagar a arte. */
+.banner .dentro::before{content:"";position:absolute;inset:-26px -44px;z-index:-1;border-radius:40px;
+  background:radial-gradient(60% 72% at 50% 50%,#000c 0%,#000a 48%,transparent 78%)}
+@media(max-width:1100px){.banner .figura-banner{opacity:.3;right:-4%}}
+@media(max-width:700px){.banner .figura-banner{display:none}}
+
+/* ═══ barra de atalhos do sistema ═══
+   Entrar num sistema era um beco: dava pra ir pro compêndio e mais nada.
+   Esta barra é o jeito de sair dele — voltar, criar, ver as fichas, abrir
+   o livro — e fica logo abaixo do banner, antes das abas. */
+.barra-sis{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:16px 0 4px}
+.barra-sis .espaco{flex:1}
+@media(max-width:700px){.barra-sis .espaco{display:none}.barra-sis{gap:8px}}
+
+/* cartões de material: capa à esquerda, o que dá pra fazer à direita */
+.capas.largas{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(420px,1fr))}
+@media(max-width:760px){.capas.largas{grid-template-columns:1fr}}
+.cartao-mat{display:grid;grid-template-columns:132px 1fr;gap:16px;padding:14px;border-radius:18px;
+  background:var(--painel);border:1px solid var(--traco)}
+:root[data-tema="cartoon"] .cartao-mat{border-width:3px;border-radius:22px;box-shadow:0 5px 0 var(--traco)}
+.cartao-mat .arte{height:186px;border-radius:12px;overflow:hidden;display:block}
+.cartao-mat .arte img{width:100%;height:100%;object-fit:cover}
+.cartao-mat .txt{min-width:0;display:flex;flex-direction:column}
+.cartao-mat b{font:700 16px/1.25 "Inter","Fredoka",sans-serif;color:var(--branco)}
+.cartao-mat i{display:block;font-style:normal;font-size:12px;color:var(--fraco);margin-top:4px}
+.cartao-mat p{margin:9px 0 0;font-size:13px;line-height:1.5;color:var(--suave)}
+.cartao-mat .acoes{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:auto;padding-top:12px}
+.cartao-mat.fechado{opacity:.78}
+@media(max-width:520px){.cartao-mat{grid-template-columns:1fr}.cartao-mat .arte{height:150px}}

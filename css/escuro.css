@@ -1,0 +1,209 @@
+/* ═══ escuro.css — o tema Dark Fantasy do Tábula Redonda ═══
+   Só entra em cena com <html data-tema="escuro">. O Cartoon continua
+   inteiro: este arquivo não toca em nada fora desse seletor.
+
+   A diferença entre os dois não é só cor. O Cartoon é gordo e saliente:
+   borda preta de 3px, sombra dura deslocada, canto bem redondo. O Escuro
+   é o oposto — borda de 1px quase invisível, sem sombra deslocada, canto
+   médio, e o contraste vindo do fundo quase preto. Por isso os dois
+   precisam redefinir forma, e não só paleta. */
+
+:root[data-tema="escuro"]{
+  /* fundo e superfícies */
+  --chao:#07070b; --chao2:#0b0b12; --chao3:#121018;
+  --painel:#131119; --painel2:#191621; --painel3:#221d2c;
+  --traco:#2a2535;                 /* vira borda discreta, não contorno grosso */
+  /* texto */
+  --branco:#f4f2f8; --suave:#cdc8da; --fraco:#8f88a3;
+  /* destaque: magenta como ACENTO, não como cor dominante */
+  --lilas:#e8275f; --carga:#5bc8e8; --ouro:#e0b24a; --menta:#4bbf84;
+  --vida:#e8456a; --laranja:#e0834a;
+  /* forma */
+  --raio:14px; --raio-g:18px;
+  --borda-l:1px;
+  --sombra:0 10px 30px -14px #000c;
+}
+
+/* ── casca ── */
+:root[data-tema="escuro"] body{
+  background:var(--chao);
+  font-family:"Inter","Nunito",system-ui,sans-serif;
+}
+:root[data-tema="escuro"] .ceu{
+  background:
+    radial-gradient(1200px 520px at 76% -12%, #2a0f2433, transparent 72%),
+    radial-gradient(900px 440px at 8% 2%, #15123033, transparent 70%);
+  opacity:1;
+}
+:root[data-tema="escuro"] .luzmouse{display:none}
+
+/* ── tipografia ── */
+:root[data-tema="escuro"] h1,
+:root[data-tema="escuro"] h2,
+:root[data-tema="escuro"] h3,
+:root[data-tema="escuro"] .logo h1,
+:root[data-tema="escuro"] .cartao h2,
+:root[data-tema="escuro"] .hub-topo h2{
+  font-family:"Inter","Nunito",system-ui,sans-serif;
+  font-weight:700; letter-spacing:-.01em; text-shadow:none;
+}
+:root[data-tema="escuro"] .hub-topo h2{font-size:25px}
+
+/* ── cartões: planos, borda fina, sem sombra deslocada ── */
+:root[data-tema="escuro"] .cartao,
+:root[data-tema="escuro"] .card-f,
+:root[data-tema="escuro"] .op,
+:root[data-tema="escuro"] .apl{
+  border:var(--borda-l) solid var(--traco);
+  border-radius:var(--raio-g);
+  box-shadow:var(--sombra);
+  background:var(--painel);
+}
+:root[data-tema="escuro"] .card-f:hover{
+  transform:translateY(-2px); border-color:#3b3348; box-shadow:var(--sombra);
+}
+:root[data-tema="escuro"] .cartao::after{display:none}
+:root[data-tema="escuro"] .op[aria-checked=true]{
+  border-color:var(--lilas); box-shadow:0 0 0 1px var(--lilas) inset, var(--sombra);
+  background:var(--painel2);
+}
+:root[data-tema="escuro"] .apl[aria-checked=true]{
+  border-color:var(--lilas); box-shadow:0 0 0 1px var(--lilas) inset, var(--sombra);
+}
+
+/* ── botões ── */
+:root[data-tema="escuro"] .bt,
+:root[data-tema="escuro"] .etapa,
+:root[data-tema="escuro"] .guia,
+:root[data-tema="escuro"] .selo-p,
+:root[data-tema="escuro"] .marca-n,
+:root[data-tema="escuro"] .pip,
+:root[data-tema="escuro"] .ctrl,
+:root[data-tema="escuro"] .pm button{
+  border-width:var(--borda-l); box-shadow:none;
+  font-family:"Inter","Nunito",system-ui,sans-serif;
+}
+:root[data-tema="escuro"] .bt{background:var(--lilas);color:#fff;border-color:transparent;border-radius:10px}
+:root[data-tema="escuro"] .bt:hover:not(:disabled){transform:none;background:#f0376d;box-shadow:none}
+:root[data-tema="escuro"] .bt:active:not(:disabled){transform:none;box-shadow:none}
+:root[data-tema="escuro"] .bt.calado{background:var(--painel3);color:var(--suave);border:1px solid var(--traco)}
+:root[data-tema="escuro"] .bt.calado:hover{background:#2b2437}
+:root[data-tema="escuro"] .bt.feito{background:var(--menta);color:#06220f}
+:root[data-tema="escuro"] .bt.perigo{background:transparent;color:var(--vida);border:1px solid #4a2230}
+:root[data-tema="escuro"] .bt.perigo:hover{background:#2a1119}
+:root[data-tema="escuro"] .etapa{background:var(--painel2);border-radius:999px}
+:root[data-tema="escuro"] .etapa:hover{transform:none;background:var(--painel3)}
+:root[data-tema="escuro"] .etapa[aria-current=step]{background:var(--lilas);color:#fff}
+:root[data-tema="escuro"] .etapa[aria-current=step] .n{background:#0006;color:#fff}
+:root[data-tema="escuro"] .pip{background:var(--painel2);border-radius:8px}
+:root[data-tema="escuro"] .pip:hover:not(:disabled){transform:none;background:var(--painel3)}
+:root[data-tema="escuro"] .pip[aria-pressed=true]{background:var(--lilas);color:#fff}
+:root[data-tema="escuro"] .pm button{background:var(--painel3);color:var(--branco);border-radius:8px}
+
+/* ── atributos: deixam de ser bloco chapado e viram cartão com acento ── */
+:root[data-tema="escuro"] .bloco-attr,
+:root[data-tema="escuro"] .atr{
+  background:var(--painel); color:var(--branco);
+  border:var(--borda-l) solid var(--traco); border-top:2px solid var(--cor);
+  border-radius:var(--raio); box-shadow:none;
+}
+:root[data-tema="escuro"] .bloco-attr svg,
+:root[data-tema="escuro"] .atr svg{fill:var(--cor);opacity:1}
+:root[data-tema="escuro"] .bloco-attr .mais{background:var(--painel3);color:var(--suave)}
+:root[data-tema="escuro"] .atr:hover{--lift:0;box-shadow:none;border-color:#3b3348}
+
+/* ── barras ── */
+:root[data-tema="escuro"] .cano{border-width:var(--borda-l);background:#0b0a10;height:10px}
+:root[data-tema="escuro"] .cano .liq::after{display:none}
+:root[data-tema="escuro"] .medidor .cano{height:6px}
+
+/* ── estante ── */
+:root[data-tema="escuro"] .card-f .retrato-mini,
+:root[data-tema="escuro"] .retrato-previa,
+:root[data-tema="escuro"] .retrato{border-width:var(--borda-l);box-shadow:none;border-radius:var(--raio)}
+:root[data-tema="escuro"] .card-f .mini-nums div,
+:root[data-tema="escuro"] .der,
+:root[data-tema="escuro"] .caixa{background:var(--painel2);border-radius:var(--raio)}
+:root[data-tema="escuro"] .recado-hub,
+:root[data-tema="escuro"] .estante-vazia{
+  border-width:var(--borda-l);box-shadow:none;background:var(--painel);border-radius:var(--raio-g)}
+:root[data-tema="escuro"] .rodape-c{background:#0a0910ee;border-top:1px solid var(--traco);box-shadow:none;
+  backdrop-filter:blur(12px)}
+:root[data-tema="escuro"] .campo input,
+:root[data-tema="escuro"] .campo textarea,
+:root[data-tema="escuro"] .retrato-link input,
+:root[data-tema="escuro"] .busca input{
+  border-width:var(--borda-l);background:var(--chao2);border-radius:10px}
+:root[data-tema="escuro"] .logo .bolha{border-width:var(--borda-l);box-shadow:none;border-radius:12px}
+:root[data-tema="escuro"] .per{background:var(--painel2);border-radius:10px}
+:root[data-tema="escuro"] .per:hover{background:var(--painel3)}
+
+/* ═══ a porta: escolha de tema na primeira visita ═══ */
+.porta-tema{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:20px;
+  background:#05050acc;backdrop-filter:blur(10px);opacity:0;transition:opacity .26s}
+.porta-tema.on{opacity:1}
+.porta-miolo{max-width:720px;width:100%;background:#131119;border:1px solid #2a2535;border-radius:20px;
+  padding:30px 28px;box-shadow:0 30px 80px -30px #000;transform:translateY(10px);transition:transform .26s}
+.porta-tema.on .porta-miolo{transform:none}
+.porta-miolo h2{font-family:"Inter","Nunito",system-ui,sans-serif;font-weight:700;font-size:23px;
+  color:#f4f2f8;margin:0 0 6px;letter-spacing:-.01em;text-shadow:none}
+.porta-miolo p{margin:0 0 22px;color:#8f88a3;font-size:14px;font-weight:600}
+.porta-opcoes{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+@media(max-width:620px){.porta-opcoes{grid-template-columns:1fr}}
+.porta-op{display:flex;flex-direction:column;gap:9px;align-items:flex-start;text-align:left;cursor:pointer;
+  background:#191621;border:1px solid #2a2535;border-radius:16px;padding:14px;color:inherit;font:inherit;
+  transition:border-color .18s,transform .18s}
+.porta-op:hover{border-color:#e8275f;transform:translateY(-3px)}
+.porta-op:focus-visible{outline:2px solid #e8275f;outline-offset:3px}
+.porta-op b{font-family:"Inter","Nunito",system-ui,sans-serif;font-size:16px;color:#f4f2f8}
+.porta-op i{font-style:normal;font-size:12.5px;color:#8f88a3;line-height:1.45}
+/* prévias de verdade: cada uma usa a forma e a cor do seu tema */
+.porta-previa{display:block;width:100%;height:112px;border-radius:12px;position:relative;overflow:hidden;padding:11px}
+.porta-previa .p-topo{position:absolute;left:0;right:0;top:0;height:20px}
+.porta-previa .p-cartao{display:block;height:34px;margin-top:16px;border-radius:8px}
+.porta-previa .p-linha{display:block;height:6px;margin-top:8px;border-radius:99px;width:76%}
+.porta-previa .p-linha.curta{width:46%}
+.porta-previa .p-bt{display:block;width:54px;height:15px;border-radius:99px;margin-top:10px}
+.previa-cartoon{background:#5546b5}
+.previa-cartoon .p-topo{background:#262150;border-bottom:3px solid #15112f}
+.previa-cartoon .p-cartao{background:#262150;border:3px solid #15112f;box-shadow:0 4px 0 #15112f}
+.previa-cartoon .p-linha{background:#cfc6f2;opacity:.75}
+.previa-cartoon .p-bt{background:#bb8cff;border:3px solid #15112f;box-shadow:0 3px 0 #15112f}
+.previa-escuro{background:#07070b}
+.previa-escuro .p-topo{background:#0b0b12;border-bottom:1px solid #2a2535}
+.previa-escuro .p-cartao{background:#131119;border:1px solid #2a2535}
+.previa-escuro .p-linha{background:#cdc8da;opacity:.5}
+.previa-escuro .p-bt{background:#e8275f}
+
+/* o seletor no topo */
+.troca-tema{display:inline-flex;gap:3px;background:var(--painel);border:2.5px solid var(--traco);
+  border-radius:999px;padding:3px}
+:root[data-tema="escuro"] .troca-tema{border-width:1px}
+.troca-tema button{border:0;background:none;cursor:pointer;border-radius:999px;padding:4px 11px;
+  font:700 11.5px/1 "Fredoka","Inter",sans-serif;color:var(--fraco)}
+:root[data-tema="escuro"] .troca-tema button{font-family:"Inter","Nunito",sans-serif}
+.troca-tema button[aria-pressed=true]{background:var(--lilas);color:var(--traco)}
+:root[data-tema="escuro"] .troca-tema button[aria-pressed=true]{color:#fff}
+
+/* as bolinhas de pele pertencem ao Cartoon; no Escuro a paleta é fixa */
+.ctrl .peles{display:contents}
+.ctrl .peles[hidden]{display:none}
+.ctrl{flex-wrap:wrap;row-gap:6px}
+:root[data-tema="escuro"] .ctrl{background:var(--painel);border-color:var(--traco)}
+.troca-tema{flex:none}
+
+/* ═══ o Cartoon saiu do site ═══
+   Páginas sem <html data-temavel> não têm tema pra trocar nem pele pra
+   colorir — a pele existe pra colorir o Cartoon. Então o grupo inteiro
+   some, em vez de ficar uma caixa vazia com um risquinho dentro. */
+:root:not([data-temavel]) .ctrl,
+:root:not([data-temavel]) .troca-tema,
+:root:not([data-temavel]) .acoes-topo .ctrl{display:none !important}
+
+/* no Dark Fantasy o campo solto segue a mesma régua dos outros */
+:root[data-tema="escuro"] .cartao textarea,
+:root[data-tema="escuro"] .cartao > input[type="text"],
+:root[data-tema="escuro"] .cartao input[type="number"],
+:root[data-tema="escuro"] .feitico input,
+:root[data-tema="escuro"] .feitico textarea{
+  border-width:var(--borda-l);background:var(--chao2);border-radius:10px}

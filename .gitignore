@@ -1,0 +1,8 @@
+# A pasta assets/ tem personagem dos outros dentro (FNAF, Gravity Falls,
+# Digital Circus, Pokémon, The Mentalist, Herobrine). Ela nunca sobe.
+assets/
+
+# lixo de sistema
+Thumbs.db
+desktop.ini
+.DS_Store

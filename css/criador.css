@@ -1,0 +1,326 @@
+/* ═══ criador.css — só o que é DO CRIADOR ═══
+   Cor, fonte, borda e sombra vêm de tema.css e layout.css, da Câmara.
+   A regra do visual aqui é a mesma da câmara e não se negocia:
+   borda 3px escura, sombra dura sem desfoque (0 Npx 0), canto bem redondo. */
+
+.criador{padding:0 0 120px;position:relative;z-index:2}
+/* ícone do bloco de atributo: mesmo tamanho e opacidade do .atr da ficha */
+.bloco-attr svg{width:21px;height:21px;fill:var(--traco);opacity:.72}
+.bloco-attr .k{font-family:"Fredoka",sans-serif;font-weight:600}
+
+/* ── trilho de etapas: são .guia, igualzinho às abas da ficha ── */
+.etapas{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0 20px}
+.etapa{font-family:"Fredoka",sans-serif;font-weight:700;font-size:13.5px;padding:6px 14px;cursor:pointer;
+  border:3px solid var(--traco);border-radius:999px;background:var(--painel3);color:var(--suave);
+  box-shadow:0 4px 0 var(--traco);display:inline-flex;align-items:center;gap:7px;
+  transition:transform .18s cubic-bezier(.3,1.4,.5,1),box-shadow .16s}
+.etapa:hover{transform:translateY(-2px)}
+.etapa[aria-current=step]{background:var(--lilas);color:var(--traco)}
+.etapa .n{width:21px;height:21px;border-radius:50%;display:grid;place-items:center;
+  background:var(--traco);color:var(--branco);font-size:11px;flex:none}
+.etapa.ok .n{background:var(--menta);color:var(--traco)}
+.etapa.erro .n{background:var(--vida);color:var(--traco)}
+.etapa[aria-current=step] .n{background:var(--traco);color:var(--branco)}
+
+/* ── layout ── */
+.mesa{display:grid;grid-template-columns:1.55fr 1fr;gap:20px;align-items:start}
+@media(max-width:980px){.mesa{grid-template-columns:1fr}.painel-vivo{position:static!important;order:-1}}
+.palco{display:grid;gap:20px;min-width:0}
+.painel-vivo{position:sticky;top:16px;display:grid;gap:14px}
+
+.cartao h2{font-family:"Fredoka",sans-serif;font-weight:700;font-size:23px;color:var(--branco);margin:0 0 3px}
+.cartao h2 small{font-family:"Nunito",sans-serif;font-weight:600;font-size:14px;color:var(--fraco)}
+.cartao .explica{color:var(--fraco);font-size:14px;margin:0 0 17px;max-width:62ch}
+.cartao h3{font-family:"Fredoka",sans-serif;font-weight:700;font-size:16px;color:var(--branco);margin:0 0 9px}
+
+/* ── atributos: os mesmos blocos coloridos da ficha, com +/− ── */
+.grade-attr{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+@media(max-width:860px){.grade-attr{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:440px){.grade-attr{grid-template-columns:repeat(2,1fr)}}
+.bloco-attr{border:3px solid var(--traco);border-radius:20px;background:var(--cor);
+  box-shadow:0 5px 0 var(--traco);color:var(--traco);padding:12px 8px 10px;text-align:center}
+.bloco-attr .v{font-family:"Fredoka",sans-serif;font-weight:700;font-size:34px;line-height:1}
+.bloco-attr .k{font-weight:700;font-size:11.5px;opacity:.78;display:block;margin-top:1px}
+.bloco-attr .mais{font-weight:700;font-size:11px;background:var(--traco);color:var(--branco);
+  border-radius:999px;padding:2px 8px;display:inline-block;margin-top:6px;min-height:18px}
+.bloco-attr .pm{display:flex;gap:6px;justify-content:center;margin-top:8px}
+.pm button{width:32px;height:28px;border-radius:10px;border:2.5px solid var(--traco);background:var(--branco);
+  color:var(--traco);font:700 19px/1 "Fredoka",sans-serif;cursor:pointer;box-shadow:0 3px 0 var(--traco);
+  display:grid;place-items:center;padding:0;transition:transform .14s cubic-bezier(.3,1.4,.5,1)}
+.pm button:hover:not(:disabled){transform:translateY(-2px)}
+.pm button:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 var(--traco)}
+.pm button:disabled{opacity:.35;cursor:not-allowed}
+
+/* ── escolhas: cartão sanfonado, nada de <select> ── */
+.escolhas{display:grid;gap:11px}
+.op{border:3px solid var(--traco);border-radius:18px;background:var(--painel2);
+  box-shadow:0 5px 0 var(--traco);overflow:hidden}
+.op[aria-checked=true]{background:var(--painel3);box-shadow:0 5px 0 var(--traco),0 0 0 3px var(--menta) inset}
+.op .cab{width:100%;display:flex;align-items:center;gap:12px;padding:14px 16px;background:none;border:0;
+  color:inherit;cursor:pointer;text-align:left;font:inherit}
+.op .cab .seta{font-size:15px;color:var(--fraco);transition:transform .2s;flex:none}
+.op[data-aberta="1"] .cab .seta{transform:rotate(90deg)}
+.op .cab b{display:block;font-family:"Fredoka",sans-serif;font-weight:700;font-size:16.5px;color:var(--branco)}
+.op .cab i{font-style:normal;font-size:13px;color:var(--fraco)}
+.op .cab .t{flex:1;min-width:0}
+.op .miolo{display:none;padding:0 16px 16px}
+.op[data-aberta="1"] .miolo{display:block}
+.op dl{display:grid;gap:8px;margin:0 0 13px}
+.op dt{font-family:"Fredoka",sans-serif;font-weight:700;font-size:11px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--fraco)}
+.op dd{margin:0;font-size:13.5px;color:var(--suave)}
+
+.bt{font-family:"Fredoka",sans-serif;font-weight:700;font-size:13.5px;padding:8px 18px;cursor:pointer;
+  border:3px solid var(--traco);border-radius:999px;background:var(--lilas);color:var(--traco);
+  box-shadow:0 4px 0 var(--traco);transition:transform .16s cubic-bezier(.3,1.4,.5,1)}
+.bt:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 0 var(--traco)}
+.bt:active:not(:disabled){transform:translateY(2px);box-shadow:0 2px 0 var(--traco)}
+.bt:disabled{opacity:.4;cursor:not-allowed}
+.bt.calado{background:var(--painel3);color:var(--suave)}
+.bt.feito{background:var(--menta);color:var(--traco)}
+.trava{color:var(--vida);font-weight:700;font-size:13px;margin:9px 0 0}
+.trava.morno{color:var(--ouro)}
+
+/* ── perícias ── */
+.lista-per{display:grid;gap:8px}
+.per{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;
+  background:var(--painel2);border-radius:16px;padding:10px 14px;border:3px solid transparent}
+.per:hover{background:var(--painel3)}
+.per .nome b{display:block;font-family:"Fredoka",sans-serif;font-weight:700;font-size:14.5px;color:var(--branco)}
+.per .nome i{font-style:normal;font-size:11.5px;color:var(--fraco)}
+.graus{display:flex;gap:4px}
+.pip{width:30px;height:30px;border-radius:10px;border:2.5px solid var(--traco);background:var(--painel);
+  color:var(--fraco);font:700 11px/1 "Fredoka",sans-serif;cursor:pointer;display:grid;place-items:center;
+  box-shadow:0 3px 0 var(--traco);transition:transform .14s}
+.pip:hover:not(:disabled){transform:translateY(-2px)}
+.pip[aria-pressed=true]{background:var(--lilas);color:var(--traco)}
+.pip:disabled{opacity:.3;cursor:not-allowed;box-shadow:none}
+.per .bon{font-family:"Fredoka",sans-serif;font-weight:700;font-size:18px;color:var(--menta);min-width:38px;text-align:right}
+
+/* ── aplicações ── */
+.apl{background:var(--painel2);border:3px solid var(--traco);border-radius:18px;padding:14px 16px;
+  box-shadow:0 5px 0 var(--traco)}
+.apl[aria-checked=true]{background:var(--painel3);box-shadow:0 5px 0 var(--traco),0 0 0 3px var(--lilas) inset}
+.apl .alto{display:flex;gap:13px;align-items:flex-start}
+.apl .alto .t{flex:1;min-width:0}
+.apl .alto b{font-family:"Fredoka",sans-serif;font-weight:700;font-size:15.5px;color:var(--branco);display:block}
+.apl .faz{font-size:13px;color:var(--fraco);margin-top:3px}
+.marcas{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.marca-n{font-weight:700;font-size:11px;background:var(--painel);border:2.5px solid var(--traco);
+  border-radius:999px;padding:3px 10px;color:var(--suave)}
+.marca-n.ruim{background:var(--vida);color:var(--traco);border-color:var(--traco)}
+.apl .extras{display:none;gap:14px;flex-wrap:wrap;align-items:flex-end;margin-top:13px;padding-top:13px;
+  border-top:3px solid var(--traco)}
+.apl[aria-checked=true] .extras{display:flex}
+
+/* ── campos ── */
+.campo{display:grid;gap:6px;min-width:0}
+.campo > span{font-family:"Fredoka",sans-serif;font-weight:700;font-size:11px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--fraco)}
+.campo input,.campo textarea{font:600 15px/1.45 "Nunito",sans-serif;color:var(--branco);
+  background:var(--painel);border:3px solid var(--traco);border-radius:14px;padding:11px 14px;width:100%}
+.campo input:focus,.campo textarea:focus{outline:3px solid var(--menta);outline-offset:2px}
+.campo textarea{min-height:92px;resize:vertical}
+.linha-campos{display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.contador{display:flex;align-items:center;gap:8px}
+.contador .v{font-family:"Fredoka",sans-serif;font-weight:700;font-size:20px;color:var(--branco);
+  min-width:26px;text-align:center}
+
+/* ── painel vivo ── */
+.medidor + .medidor{margin-top:12px}
+.medidor .topo-m{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:5px}
+.medidor .topo-m span{font-size:12.5px;color:var(--fraco);font-weight:600}
+.medidor .topo-m b{font-family:"Fredoka",sans-serif;font-weight:700;font-size:15px;color:var(--branco)}
+.medidor .cano{height:18px}
+.medidor.estourou .topo-m b{color:var(--vida)}
+.der .f{font-size:11px;color:var(--fraco)}
+
+/* ── rodapé ── */
+.rodape-c{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--painel);
+  border-top:3px solid var(--traco);box-shadow:0 -4px 0 var(--traco)}
+.rodape-c .dentro{max-width:1180px;margin:0 auto;padding:12px 20px;display:flex;gap:12px;align-items:center}
+.rodape-c .dizer{flex:1;font-size:13px;color:var(--fraco);font-weight:600;min-width:0}
+.rodape-c .dizer.ruim{color:var(--vida)}
+
+/* ── revisão ── */
+.resumo{display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.caixa{background:var(--painel2);border-radius:16px;padding:14px}
+.caixa h4{font-family:"Fredoka",sans-serif;font-weight:700;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--fraco);margin:0 0 9px}
+.caixa ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.caixa li{display:flex;justify-content:space-between;gap:10px;font-size:13.5px}
+.caixa li span{color:var(--fraco);min-width:0}
+.caixa li b{font-family:"Fredoka",sans-serif;font-weight:700;color:var(--branco);white-space:nowrap}
+.nada{color:var(--fraco);font-style:italic;font-size:13px}
+@media print{.topo,.etapas,.rodape-c,.painel-vivo,.ceu,.po,.luzmouse,.vinheta{display:none!important}
+  .mesa{display:block}body{background:#fff}}
+
+/* ═══ HUB — a estante de fichas ═══════════════════════════════════════ */
+.hub{padding:0 0 110px;position:relative;z-index:2}
+.hub-topo{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.hub-topo h2{font-family:"Fredoka",sans-serif;font-weight:700;font-size:27px;color:var(--branco);margin:0;
+  text-shadow:0 3px 0 var(--traco)}
+.hub-topo p{color:var(--suave);font-size:14px;margin:3px 0 0;font-weight:600}
+.hub-topo .espaco{flex:1}
+
+.estante{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
+
+.card-f{background:var(--painel);border:3px solid var(--traco);border-radius:22px;box-shadow:0 6px 0 var(--traco);
+  padding:18px;display:flex;flex-direction:column;gap:13px;transition:transform .18s cubic-bezier(.3,1.4,.5,1)}
+.card-f:hover{transform:translateY(-4px);box-shadow:0 10px 0 var(--traco)}
+.card-f .cabeca-f{display:flex;gap:13px;align-items:flex-start}
+.card-f .retrato-mini{width:60px;height:60px;flex:none;border-radius:18px;border:3px solid var(--traco);
+  box-shadow:0 4px 0 var(--traco);background:linear-gradient(160deg,var(--painel3),var(--painel2));
+  display:grid;place-items:center;overflow:hidden;position:relative}
+.card-f .retrato-mini img{width:100%;height:100%;object-fit:cover}
+.card-f .retrato-mini svg{width:26px;height:26px;fill:var(--lilas);opacity:.75}
+.card-f .retrato-mini .nv{position:absolute;right:-6px;bottom:-6px;width:28px;height:28px;border-radius:50%;
+  background:var(--ouro);color:var(--traco);border:2.5px solid var(--traco);display:grid;place-items:center;
+  font-family:"Fredoka",sans-serif;font-weight:700;font-size:12px}
+.card-f .quem{flex:1;min-width:0}
+.card-f .quem b{display:block;font-family:"Fredoka",sans-serif;font-weight:700;font-size:19px;color:var(--branco);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-f .quem i{font-style:normal;display:block;font-size:12.5px;color:var(--fraco);margin-top:2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-f .chips{display:flex;gap:6px;flex-wrap:wrap}
+.card-f .mini-nums{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.card-f .mini-nums div{background:var(--painel2);border-radius:12px;padding:7px 4px;text-align:center}
+.card-f .mini-nums b{display:block;font-family:"Fredoka",sans-serif;font-weight:700;font-size:17px;color:var(--branco)}
+.card-f .mini-nums span{font-size:9.5px;letter-spacing:.04em;color:var(--fraco);font-weight:700;text-transform:uppercase}
+.card-f .acoes{display:flex;gap:7px;flex-wrap:wrap;margin-top:auto;padding-top:4px}
+.card-f .acoes .bt{padding:7px 14px;font-size:12.5px}
+.bt.perigo{background:var(--vida);color:var(--traco)}
+.card-f.incompleta{border-style:dashed}
+.card-f .falta{font-size:12px;font-weight:700;color:var(--ouro);background:var(--painel2);
+  border-radius:11px;padding:7px 10px}
+
+.estante-vazia{background:var(--painel);border:3px dashed var(--traco);border-radius:22px;padding:40px 24px;
+  text-align:center;color:var(--suave)}
+.estante-vazia h3{font-family:"Fredoka",sans-serif;font-weight:700;font-size:21px;color:var(--branco);margin:0 0 7px}
+.estante-vazia p{margin:0 auto 18px;max-width:46ch;font-size:14px}
+
+.recado-hub{background:var(--painel);border:3px solid var(--traco);border-radius:18px;box-shadow:0 5px 0 var(--traco);
+  padding:15px 18px;margin-top:22px;font-size:13.5px;color:var(--suave);font-weight:600}
+.recado-hub b{color:var(--branco)}
+
+/* ═══ retrato por upload ═══ */
+.retrato-campo{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.retrato-previa{width:104px;height:104px;flex:none;border-radius:24px;border:3px solid var(--traco);
+  box-shadow:0 5px 0 var(--traco);overflow:hidden;background:linear-gradient(160deg,var(--painel3),var(--painel2));
+  display:grid;place-items:center}
+.retrato-previa img{width:100%;height:100%;object-fit:cover;display:block}
+.retrato-previa svg{width:38px;height:38px;fill:var(--lilas);opacity:.6}
+.retrato-acoes{flex:1;min-width:210px;display:flex;flex-direction:column;gap:9px;align-items:flex-start}
+.retrato-nota{margin:0;font-size:12.5px;color:var(--fraco);font-weight:600;line-height:1.45}
+.retrato-link{width:100%}
+.retrato-link summary{cursor:pointer;font-size:12.5px;color:var(--fraco);font-weight:700;
+  list-style:none;padding:4px 0}
+.retrato-link summary::-webkit-details-marker{display:none}
+.retrato-link summary::before{content:"▸ ";transition:.2s}
+.retrato-link[open] summary::before{content:"▾ "}
+.retrato-link input{margin-top:7px;font:600 14px/1.4 "Nunito",sans-serif;color:var(--branco);
+  background:var(--painel);border:3px solid var(--traco);border-radius:12px;padding:9px 12px;width:100%}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Peças do montador de Feiticeiros & Maldições.
+   São genéricas de propósito: a mesma escolha-em-cartão, a mesma tabela de
+   perícia e a mesma grade de números servem pra qualquer sistema d20 que
+   entre depois.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.escolhas{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));margin-top:12px}
+.escolha{display:block;text-align:left;cursor:pointer;padding:14px 15px;border-radius:14px;
+  background:var(--painel2);border:1px solid var(--traco);color:var(--suave);font:inherit}
+:root[data-tema="cartoon"] .escolha{border-width:3px;box-shadow:0 4px 0 var(--traco)}
+.escolha:hover:not(:disabled){background:var(--painel3)}
+.escolha[aria-pressed="true"]{border-color:var(--lilas);background:var(--painel3);
+  box-shadow:inset 0 0 0 1px var(--lilas)}
+.escolha b{display:block;font:700 15px/1.2 "Inter","Fredoka",sans-serif;color:var(--branco);margin-bottom:4px}
+.escolha i{display:block;font-style:normal;font-size:12.5px;line-height:1.45}
+.escolha .ex{display:block;margin-top:7px;font-size:11.5px;color:var(--fraco)}
+.escolha.mini{display:inline-block;padding:9px 15px;border-radius:999px;margin:0 6px 6px 0;
+  font:700 13px/1 "Inter",sans-serif}
+.escolha:disabled{cursor:not-allowed}
+
+.lista-tracos{margin:12px 0 0;display:grid;gap:9px}
+.lista-tracos dt{font:700 13px/1.3 "Inter","Nunito",sans-serif;color:var(--branco)}
+.lista-tracos dd{margin:2px 0 0;font-size:13px;line-height:1.5;color:var(--suave)}
+
+.tabela-per{display:grid;gap:5px;margin-top:12px}
+.linha-per{display:grid;grid-template-columns:1fr 42px 46px auto;align-items:center;gap:8px;
+  padding:7px 11px;border-radius:11px;background:var(--painel2);border:1px solid var(--traco)}
+:root[data-tema="cartoon"] .linha-per{border-width:2px}
+.linha-per b{font:700 13.5px/1 "Inter","Nunito",sans-serif;color:var(--branco)}
+.linha-per .at{font:700 10.5px/1 "Inter",sans-serif;color:var(--fraco);letter-spacing:.06em}
+.linha-per .val{font:700 15px/1 "Inter",sans-serif;color:var(--lilas);text-align:right}
+.linha-per .gr{display:flex;gap:4px}
+.linha-per .gr button{cursor:pointer;padding:6px 10px;border-radius:8px;border:1px solid var(--traco);
+  background:var(--painel);color:var(--fraco);font:700 11px/1 "Inter",sans-serif}
+.linha-per .gr button[aria-pressed="true"]{background:var(--lilas);color:#fff;border-color:var(--lilas)}
+:root[data-tema="cartoon"] .linha-per .gr button[aria-pressed="true"]{color:var(--traco)}
+.linha-per.proibida{opacity:.4}
+@media(max-width:620px){
+  .linha-per{grid-template-columns:1fr auto;grid-template-areas:"n v" "g g"}
+  .linha-per b{grid-area:n}.linha-per .val{grid-area:v}.linha-per .at{display:none}
+  .linha-per .gr{grid-area:g}
+}
+
+.grade-nums{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));margin-top:14px}
+.grade-nums.peq{grid-template-columns:repeat(2,1fr);gap:7px}
+.grade-nums .num{padding:11px 13px;border-radius:12px;background:var(--painel2);border:1px solid var(--traco)}
+:root[data-tema="cartoon"] .grade-nums .num{border-width:2px}
+.grade-nums .num .k{display:block;font:700 10.5px/1 "Inter",sans-serif;color:var(--fraco);
+  letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.grade-nums .num b{display:block;font:700 21px/1 "Inter","Fredoka",sans-serif;color:var(--branco)}
+.grade-nums .num i{display:block;font-style:normal;font-size:11px;color:var(--fraco);margin-top:4px}
+.grade-nums.peq .num b{font-size:17px}
+
+.mini-attrs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0 12px}
+.mini-attrs div{text-align:center;padding:8px 4px;border-radius:10px;background:var(--painel2);border:1px solid var(--traco)}
+.mini-attrs b{display:block;font:700 17px/1 "Inter",sans-serif;color:var(--branco)}
+.mini-attrs span{display:block;font:700 9.5px/1 "Inter",sans-serif;color:var(--fraco);margin-top:3px}
+.mini-attrs i{display:block;font-style:normal;font-size:11px;color:var(--lilas);margin-top:2px}
+
+.alerta{margin-top:12px;padding:13px 15px;border-radius:13px;background:color-mix(in srgb,var(--vida) 16%,var(--painel2));
+  border:1px solid var(--vida)}
+.alerta b{color:var(--branco);font-size:13px}
+.alerta ul{margin:7px 0 0;padding-left:18px;font-size:12.5px;line-height:1.6}
+.alerta button{background:none;border:0;padding:0;cursor:pointer;color:var(--lilas);
+  font:700 12.5px/1 inherit;text-decoration:underline}
+
+.fileira-bt{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.mini-campo{display:flex;flex-direction:column;gap:3px;flex:0 0 76px}
+.mini-campo span{font:700 10px/1 "Inter",sans-serif;color:var(--fraco);text-transform:uppercase;letter-spacing:.05em}
+.mini-campo input{width:100%}
+
+.lista-feiticos{display:grid;gap:10px;margin-top:10px}
+.feitico{display:grid;grid-template-columns:1fr 76px 76px auto;gap:8px;align-items:end;
+  padding:11px;border-radius:13px;background:var(--painel2);border:1px solid var(--traco)}
+:root[data-tema="cartoon"] .feitico{border-width:2px}
+.feitico textarea{grid-column:1/-1}
+@media(max-width:620px){.feitico{grid-template-columns:1fr 1fr}.feitico > input{grid-column:1/-1}}
+
+.retrato-cx{display:flex;gap:14px;align-items:flex-start;margin-top:6px}
+.retrato-cx .moldura{width:92px;height:92px;flex:none;border-radius:14px;overflow:hidden;
+  background:var(--painel2);border:1px solid var(--traco);display:grid;place-items:center}
+:root[data-tema="cartoon"] .retrato-cx .moldura{border-width:3px}
+.retrato-cx .moldura img{width:100%;height:100%;object-fit:cover}
+.retrato-cx .moldura svg{width:30px;height:30px;fill:var(--lilas)}
+
+/* ═══ campo solto dentro de um cartão ═══
+   Até aqui só o que estava dentro de .campo tinha aparência. Um
+   <textarea> ou <input> solto — as Anotações, os feitiços, a técnica —
+   caía no padrão do navegador: fundo claro, borda branca e fonte de
+   máquina de escrever, no meio de uma página escura. */
+.cartao textarea,
+.cartao > input[type="text"],
+.cartao input[type="number"],
+.feitico input, .feitico textarea{
+  font:600 14.5px/1.5 "Nunito","Inter",sans-serif;color:var(--branco);
+  background:var(--painel);border:3px solid var(--traco);border-radius:14px;
+  padding:11px 14px;width:100%;display:block}
+.cartao textarea,.feitico textarea{min-height:84px;resize:vertical}
+.cartao textarea:focus,.cartao input:focus,.feitico input:focus,.feitico textarea:focus{
+  outline:3px solid var(--menta);outline-offset:2px}
+.cartao textarea::placeholder,.cartao input::placeholder,
+.feitico input::placeholder,.feitico textarea::placeholder{color:var(--fraco);opacity:.8}

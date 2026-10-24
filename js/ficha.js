@@ -391,7 +391,10 @@ R.Ficha = { montar(){
         <p class="explica-i"><b>tipo</b> aceita <code>bencao</code> ou <code>maldicao</code>
           (sem nada, é item comum). Bônus negativo é malefício e funciona igual:
           <code>"defesa":-2</code>. Maldição com <code>"preso":true</code> entra equipada
-          e <b>não sai pela ficha</b> — tirar é cena de mesa.</p>
+          e <b>não sai sozinha</b>: tirar é cena de mesa. Pra soltar, o Mestre digita
+          <code>QUEBRADA</code> no Tirar — ou, se quiser uma palavra só dele, põe
+          <code>"chave":"palavra"</code> no código e revela quando a Maldição cair.
+          A ficha guarda a chave embaralhada.</p>
         <p class="explica-i">Campos que a ficha entende em <b>bonus</b>:
           ${I.BONUS.map(([k,r]) => `<code>${k}</code> (${r.toLowerCase()})`).join(" · ")}.
           Qualquer outro efeito vai em <b>efeito</b>, como texto — quem aplica é o Mestre.</p>
@@ -424,9 +427,18 @@ R.Ficha = { montar(){
       /* Item preso não sai por botão. É o que separa uma Maldição de um
          item ruim: item ruim você larga. */
       if(it.preso){
-        alert(`"${it.nome}" não sai.\n\nTirar uma Maldição é cena de mesa — ` +
-          `ritual, troca, alguém pagando por você. Quando acontecer, o Mestre tira daqui.`);
-        return;
+        /* Sem servidor, quem "tira" é uma palavra. Com chave: a que o Mestre
+           escolheu ao criar a Maldição. Sem chave: QUEBRADA, que o Mestre
+           digita na hora em que a Maldição cai na mesa. */
+        const resp = prompt(`"${it.nome}" é Maldição presa.\n\n` + (it.trava
+          ? `Ela só sai com a palavra que o Mestre revela quando a Maldição é quebrada na mesa.\n\nPalavra:`
+          : `Tirar é cena de mesa — ritual, troca, alguém pagando por você. ` +
+            `Quando a Maldição for quebrada, o Mestre escreve QUEBRADA aqui.`));
+        if(resp === null) return;
+        const certo = it.trava ? I.travar(resp) === it.trava
+          : resp.trim().toLowerCase() === "quebrada";
+        if(!certo){ alert(`Não foi. "${it.nome}" continua na ficha.`); return; }
+        lista.splice(+el.dataset.tirarItem, 1); return salvarItens();
       }
       if(!confirm(`Tirar "${it.nome}" da ficha?`)) return;
       lista.splice(+el.dataset.tirarItem, 1); return salvarItens(); }

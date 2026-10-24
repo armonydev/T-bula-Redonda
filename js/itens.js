@@ -39,6 +39,17 @@ const TIPOS = {
 const num = v => { const n = Number(v); return Number.isFinite(n) ? Math.trunc(n) : 0; };
 const txt = (v, max) => String(v == null ? "" : v).slice(0, max || 200);
 
+/* A chave de uma Maldição. O Mestre escreve "chave":"palavra" no código do
+   item; a ficha guarda só um resumo embaralhado ("trava"), então o código
+   copiado da ficha não entrega a palavra. Não é cofre — é pra ninguém
+   tirar sem querer nem ler a resposta de bobeira. */
+function travar(palavra){
+  const t = String(palavra || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
+  let h = 2166136261;
+  for(const c of t){ h ^= c.codePointAt(0); h = Math.imul(h, 16777619) >>> 0; }
+  return "t" + h.toString(36);
+}
+
 /** Põe um objeto qualquer no feitio de item. Nunca devolve lixo. */
 function normalizar(bruto){
   if(!bruto || typeof bruto !== "object") return null;
@@ -61,6 +72,8 @@ function normalizar(bruto){
        item ruim: item ruim você larga. Tirar um preso é cena de mesa —
        ritual, troca, alguém pagando por você — não clique de botão. */
     preso: !!bruto.preso,
+    trava: !bruto.preso ? "" : bruto.chave ? travar(bruto.chave)
+      : (typeof bruto.trava === "string" ? bruto.trava.slice(0, 16) : ""),
     /* Só item equipado empurra número. Um item no fundo da mochila não
        aumenta a sua Defesa, e essa é a diferença entre carregar e usar. */
     equipado: bruto.preso ? true
@@ -98,6 +111,7 @@ function paraTexto(itens, bonito){
     if(i.efeito) o.efeito = i.efeito;
     if(i.bonus && Object.keys(i.bonus).length) o.bonus = i.bonus;
     if(i.preso)    o.preso = true;
+    if(i.preso && i.trava) o.trava = i.trava;
     if(i.equipado && !i.preso) o.equipado = true;
     return o;
   });
@@ -116,5 +130,5 @@ function somaBonus(itens){
 }
 const pesoTotal = itens => (itens || []).reduce((s,i) => s + Math.max(0, num(i && i.peso)), 0);
 
-window.RSS.Itens = { BONUS, CHAVES_BONUS, TIPOS, normalizar, lerTexto, paraTexto, somaBonus, pesoTotal };
+window.RSS.Itens = { travar, BONUS, CHAVES_BONUS, TIPOS, normalizar, lerTexto, paraTexto, somaBonus, pesoTotal };
 })();

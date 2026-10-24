@@ -205,6 +205,7 @@ body:hover .luzmouse{opacity:1}
 .item:hover::after{opacity:1}
 .item b{display:block;font-family:"Fredoka",sans-serif;font-weight:600;font-size:15px;margin-bottom:2px}
 .item span{font-size:13.5px;color:var(--suave);line-height:1.4}
+.item b .apl-tipo{font-family:inherit;font-weight:400;font-size:12px;color:var(--suave);margin-left:6px}
 .item .detalhe{display:block;overflow:hidden;max-height:0;opacity:0;
   transition:max-height .34s cubic-bezier(.2,.9,.2,1),opacity .28s,margin .3s}
 .item[aria-expanded=true] .detalhe{max-height:140px;opacity:1;margin-top:8px}

@@ -222,6 +222,8 @@ const T = {
           <span class="v">${(minha&&minha.formas)||1}</span>
           <button class="pip" type="button" data-forma="${x.id}" data-d="1">+</button>
           <span class="marca-n">custa ${R.custoDeRepertorio((minha&&minha.formas)||1)}</span></div></div>`:""}
+        <label class="campo" style="min-width:160px"><span>Nome dela na ficha</span>
+          <input type="text" data-nomeap="${x.id}" value="${esc((minha&&minha.nome)||"")}" placeholder="${esc(x.nome)}" autocomplete="off"></label>
         <label class="campo" style="flex:1;min-width:200px"><span>Como ela é, na ficção</span>
           <input type="text" data-nota="${x.id}" value="${esc((minha&&minha.nota)||"")}" placeholder="a ferrugem sobe pelo braço de quem ele encosta" autocomplete="off"></label>
       </div></div>`;}).join("")}</div>
@@ -274,7 +276,7 @@ const T = {
         if(x.danoBase)partes.push(`Dano Base ${x.danoBase}`);
         if(ap.reforcos)partes.push(`${ap.reforcos} Reforço(s)`);
         if((ap.formas||1)>1)partes.push(`${ap.formas} formas`);
-        return `<li><span>${esc(x.nome)}${ap.nota?` — ${esc(ap.nota)}`:""}</span><b>${esc(partes.join(" · "))}</b></li>`;}).join("")}</ul>`:`<p class="nada">Nenhuma.</p>`}</div>
+        return `<li><span>${ap.nome?`${esc(ap.nome)} <small>(${esc(x.nome)})</small>`:esc(x.nome)}${ap.nota?` — ${esc(ap.nota)}`:""}</span><b>${esc(partes.join(" · "))}</b></li>`;}).join("")}</ul>`:`<p class="nada">Nenhuma.</p>`}</div>
     ${ficha.lastro.length?`<div class="caixa" style="grid-column:1/-1"><h4>Lastro</h4><ul>${
       /* .filter(Boolean): um JSON escrito à mão (ou de uma versão antiga)
          pode trazer um Lastro que não existe mais na lista. Sem isto, um
@@ -498,6 +500,8 @@ document.addEventListener("input", ev=>{
   if(id==="f-conceito"){ ficha.conceito=t.value; Arm.salvar(ficha); return leve(); }
   if(id==="f-anot"){ ficha.anotacoes=t.value; return void Arm.salvar(ficha); }
   if(id==="f-nivel"){ ficha.nivel=Math.min(20,Math.max(1,parseInt(t.value)||1)); Arm.salvar(ficha); return leve(); }
+  if(t.dataset.nomeap!==undefined){ const ap=ficha.aplicacoes.find(x=>x.id===t.dataset.nomeap);
+    if(ap){ ap.nome=t.value; Arm.salvar(ficha); } return; }
   if(t.dataset.nota!==undefined){ const ap=ficha.aplicacoes.find(x=>x.id===t.dataset.nota);
     if(ap){ ap.nota=t.value; Arm.salvar(ficha); } }
 });

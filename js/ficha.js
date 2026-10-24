@@ -84,12 +84,13 @@ if (base.salva){
       linha.push("Custo Base " + cb);
       linha.push(x.duracao);
       const det = [];
-      if (typeof x.custoBase === "number")
+      if (typeof x.custoBase === "number" && (x.danoBase || x.danoBaseTexto))
         det.push("Sobram " + (lim - x.custoBase) + " de Carga pra repartir entre Acerto e Dano.");
       if (ap.reforcos) det.push(ap.reforcos + " Reforço(s) comprado(s).");
       if ((ap.formas||1) > 1) det.push("Repertório de " + ap.formas + " formas, uma de cada vez.");
       if (ap.nota) det.push(ap.nota);
-      return `<button class="item" aria-expanded="false" data-tilt><b>${seg(x.nome)}</b>` +
+      const titulo = ap.nome ? `${seg(ap.nome)} <small class="apl-tipo">${seg(x.nome)}</small>` : seg(x.nome);
+      return `<button class="item" aria-expanded="false" data-tilt><b>${titulo}</b>` +
              `<span>${seg(linha.join(" · "))}</span>` +
              `<span class="detalhe"><em>${seg(det.join(" "))||seg(x.faz)}</em></span></button>`;
     }).join("");

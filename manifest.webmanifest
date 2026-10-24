@@ -1,0 +1,32 @@
+{
+  "name": "Tábula Redonda",
+  "short_name": "Tábula",
+  "description": "Fichas e sistemas de RPG. Roda sem conta, funciona offline e recebe fichas compartilhadas.",
+  "lang": "pt-BR",
+  "start_url": "./fichas.html?app=1",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#1b1226",
+  "theme_color": "#1b1226",
+  "icons": [
+    { "src": "img/app/icone-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "img/app/icone-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "img/app/icone-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "share_target": {
+    "action": "./receber",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "titulo",
+      "text": "texto",
+      "files": [
+        { "name": "fichas", "accept": ["application/json", ".json", "application/octet-stream", "text/plain"] }
+      ]
+    }
+  },
+  "file_handlers": [
+    { "action": "./fichas.html?abrir=1", "accept": { "application/json": [".json"] } }
+  ]
+}

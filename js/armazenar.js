@@ -36,6 +36,7 @@ const carregar = id => lerTudo()[id] || null;
 const listar   = () => Object.values(lerTudo()).sort((a,b)=>(b.atualizadoEm||0)-(a.atualizadoEm||0));
 
 function exportar(f){
+  if (window.TabulaApp && window.TabulaApp.entregar) return window.TabulaApp.entregar(f);
   const nome = (f.nome||"ficha").normalize("NFD").replace(/[̀-ͯ]/g,"")
     .replace(/[^a-zA-Z0-9]+/g,"-").replace(/^-|-$/g,"").toLowerCase() || "ficha";
   const url = URL.createObjectURL(new Blob([JSON.stringify(f,null,2)],{type:"application/json"}));
@@ -49,7 +50,7 @@ function importar(arq){
     const fr = new FileReader();
     fr.onload = () => { try{
       const f = JSON.parse(fr.result);
-      if (!f || typeof f!=="object" || !f.atributosBase) throw new Error("não parece uma ficha do Ressonância");
+      if (!f || typeof f!=="object" || !(f.atributosBase || ["ressonancia","saa","fm"].includes(f.sistema))) throw new Error("não parece uma ficha da Tábula");
       f.id = f.id || novoId(); ok(f);
     }catch(e){ erro(e); } };
     fr.onerror = () => erro(new Error("não deu pra ler o arquivo"));

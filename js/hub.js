@@ -264,7 +264,7 @@ document.addEventListener("click", ev=>{
   }
   if((el=q("#abas-hub [data-aba]"))){ aba = el.dataset.aba; pintar(); return; }
   if(q("[data-ir-criar]")){ ev.preventDefault(); aba = "criar"; pintar(); return; }
-  if(q("#b-exportar-tudo")){ Arm.listar().forEach(f => Arm.exportar(f)); return; }
+  if(q("#b-exportar-tudo")){ const todas=Arm.listar(); if(window.TabulaApp) window.TabulaApp.entregar(todas); else todas.forEach(f => Arm.exportar(f)); return; }
 });
 
 document.addEventListener("input", ev=>{
